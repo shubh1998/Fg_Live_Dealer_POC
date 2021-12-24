@@ -2,7 +2,7 @@
   "solidity.compileUsingRemoteVersion": "0.5.8",
   "material-icon-theme.showUpdateMessage": false,
   "window.zoomLevel": 0,
-  "workbench.iconTheme": "material-icon-theme",
+  "workbench.iconTheme": "vscode-icons",
   "workbench.statusBar.visible": true,
   "workbench.activityBar.visible": true,
   "workbench.sideBar.location": "left",
