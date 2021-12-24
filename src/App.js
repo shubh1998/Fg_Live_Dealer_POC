@@ -1,12 +1,14 @@
 import React from 'react'
-import './App.css'
+import './styles/App.css'
+import { store } from './redux-thunk/store'
+import AppRoutes from './routes'
+import { Provider } from 'react-redux'
 
 function App () {
   return (
-    <div>
-      {/* start from here */}
-      User Frontend
-    </div>
+    <Provider store={store}>
+      <AppRoutes />
+    </Provider>
   )
 }
 
