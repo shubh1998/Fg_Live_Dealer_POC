@@ -33,7 +33,7 @@ export const userDragonTiger = () => {
   )
   const [isBetActive, setIsBetActive] = useState(true)
 
-  const handlerSelectedBetCoin = (betCoin) => {
+  const handleSelectedBetCoin = (betCoin) => {
     setState({ selectedBetCoin: betCoin })
   }
 
@@ -59,7 +59,7 @@ export const userDragonTiger = () => {
     }, [isBetActive]
   )
 
-  const handlerUndoOperation = () => {
+  const handleUndoOperation = () => {
     const lastBet = DTState.betSequence[DTState.betSequence.length - 1]
     setState({ betSequence: DTState.betSequence.slice(0, -1) })
     switch (lastBet.type) {
@@ -94,7 +94,10 @@ export const userDragonTiger = () => {
     }
   }
 
-  const handlerBet = (type) => {
+  const handleBet = (type) => {
+    if (!isBetActive) {
+      return
+    }
     if (!DTState.selectedBetCoin) {
       alert('Please select betting amount')
       return
@@ -146,8 +149,8 @@ export const userDragonTiger = () => {
     casinoTokens,
     DTState,
     isBetActive,
-    handlerSelectedBetCoin,
-    handlerUndoOperation,
-    handlerBet
+    handleSelectedBetCoin,
+    handleUndoOperation,
+    handleBet
   }
 }

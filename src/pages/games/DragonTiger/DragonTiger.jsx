@@ -8,9 +8,9 @@ export const DragonTiger = () => {
     casinoTokens,
     DTState,
     isBetActive,
-    handlerSelectedBetCoin,
-    handlerUndoOperation,
-    handlerBet
+    handleSelectedBetCoin,
+    handleUndoOperation,
+    handleBet
   } = userDragonTiger()
 
   return (
@@ -20,7 +20,7 @@ export const DragonTiger = () => {
           {isBetActive ? 'Betting time is ACTIVE' : 'Betting time is CLOSE'}
         </Notifier>
         <FlexContainer className='betting-option'>
-          <HalfContainer onClick={() => handlerBet(OperationType.DRAGON)}>
+          <HalfContainer onClick={() => handleBet(OperationType.DRAGON)}>
             <GameIcon src='game-icon/dragon.svg' alt='dragon_icon' />
             {DTState.betAmountOnDragon.toFixed(1).replace(/[.,]0$/, '')}
             <span>1:1</span>
@@ -28,19 +28,19 @@ export const DragonTiger = () => {
           </HalfContainer>
 
           <HalfContainer>
-            <div onClick={() => handlerBet(OperationType.TIE)}>
+            <div onClick={() => handleBet(OperationType.TIE)}>
               {DTState.betAmountOnTie.toFixed(1).replace(/[.,]0$/, '')}
               <p>11:1</p>
               <BetSideTitle>Tie</BetSideTitle>
             </div>
-            <div onClick={() => handlerBet(OperationType.SUITED_TIE)}>
+            <div onClick={() => handleBet(OperationType.SUITED_TIE)}>
               {DTState.betAmountOnSuitedTie.toFixed(1).replace(/[.,]0$/, '')}
               <p>50:1</p>
               <BetSideTitle>Suited Tie</BetSideTitle>
             </div>
           </HalfContainer>
 
-          <HalfContainer onClick={() => handlerBet(OperationType.TIGER)}>
+          <HalfContainer onClick={() => handleBet(OperationType.TIGER)}>
             <GameIcon src='game-icon/tiger.svg' alt='tiger_icon' />
             {DTState.betAmountOnTiger.toFixed(1).replace(/[.,]0$/, '')}
             <span>1:1</span>
@@ -50,7 +50,7 @@ export const DragonTiger = () => {
         <BettingAmountOptions className='casino-coin'>
           <button
             disabled={!isBetActive || DTState.betSequence.length === 0}
-            onClick={handlerUndoOperation}
+            onClick={handleUndoOperation}
           >
             Undo
           </button>
@@ -60,7 +60,7 @@ export const DragonTiger = () => {
               key={index}
               disabled={!isBetActive}
               selectedButton={DTState.selectedBetCoin === token}
-              onClick={() => handlerSelectedBetCoin(token)}
+              onClick={() => handleSelectedBetCoin(token)}
             >
               {token}
             </BetCoin>
@@ -68,7 +68,7 @@ export const DragonTiger = () => {
           <button
             disabled={!isBetActive || DTState.betSequence.length === 0}
             onClick={() => {
-              handlerBet(OperationType.DOUBLE)
+              handleBet(OperationType.DOUBLE)
             }}
           >
             Double

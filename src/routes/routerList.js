@@ -1,5 +1,6 @@
 import { DragonTiger } from '../pages/games/DragonTiger/DragonTiger'
 import { Home } from '../pages/Home'
+import SicBo from '../pages/games/SicBo'
 
 const routerList = [
   {
@@ -14,6 +15,13 @@ const routerList = [
     label: 'DragonTiger',
     path: '/dragon-tiger',
     component: DragonTiger,
+    hasNavbar: true
+  },
+  {
+    key: 3,
+    label: 'SicBo',
+    path: '/sicbo',
+    component: SicBo,
     hasNavbar: true
   }
 ]

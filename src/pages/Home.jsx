@@ -24,6 +24,15 @@ export const Home = () => {
         <GameIcon src='game-icon/roulette-logo.png' alt='roulette_icon' />
         <GameTitle>Roulette</GameTitle>
       </GameIconButton>
+
+      <GameIconButton
+        onClick={() => {
+          window.location.href = `${window.location.origin}/sicbo`
+        }}
+      >
+        <GameIcon src='game-icon/sicbo-logo.png' alt='roulette_icon' />
+        <GameTitle>SicBo</GameTitle>
+      </GameIconButton>
     </GamesContainer>
   )
 }
