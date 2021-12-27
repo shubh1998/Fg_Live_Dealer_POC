@@ -1,5 +1,5 @@
-import { DragonTiger } from '../pages/games/DragonTiger'
-import Home from '../pages/games/Home'
+import { DragonTiger } from '../pages/games/DragonTiger/DragonTiger'
+import { Home } from '../pages/Home'
 
 const routerList = [
   {

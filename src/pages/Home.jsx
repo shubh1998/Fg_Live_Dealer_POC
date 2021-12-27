@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import React from 'react'
 
-function Home () {
+export const Home = () => {
   return (
     <GamesContainer>
       <GameIconButton
@@ -48,5 +48,3 @@ const GameIconButton = styled.button({
   display: 'grid',
   height: '185px'
 })
-
-export default Home
