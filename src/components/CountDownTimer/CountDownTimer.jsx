@@ -25,11 +25,11 @@ const renderTime = ({ remainingTime }) => {
   )
 }
 
-export const CountDownTimer = ({ contDownTime = 10 }) => {
+export const CountDownTimer = ({ countDownTime = 10 }) => {
   return (
     <CountdownCircleTimer
       isPlaying
-      duration={contDownTime}
+      duration={countDownTime}
       colors={[['#004777']]}
       size={50}
       strokeWidth={7}

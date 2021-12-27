@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 // import NavBar from '../components/layouts/Header/NavBar'
 
 const RouteValidator = ({ hasNavbar, component: Component, ...props }) => {
-  console.log(props)
   if (hasNavbar) {
     return (
       <>
