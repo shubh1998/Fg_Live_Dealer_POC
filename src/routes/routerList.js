@@ -1,6 +1,6 @@
 import { DragonTiger } from '../pages/games/DragonTiger/DragonTiger'
-import { Home } from '../pages/Home'
-import SicBo from '../pages/games/SicBo'
+import { SicBo } from '../pages/games/SicBo/SicBo'
+import { Home } from '../pages/Home/Home'
 
 const routerList = [
   {

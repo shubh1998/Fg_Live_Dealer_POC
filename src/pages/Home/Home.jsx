@@ -1,5 +1,5 @@
-import styled from '@emotion/styled'
 import React from 'react'
+import { GameIcon, GameIconButton, GamesContainer, GameTitle } from './Home.styles'
 
 export const Home = () => {
   return (
@@ -36,24 +36,3 @@ export const Home = () => {
     </GamesContainer>
   )
 }
-
-const GamesContainer = styled.div({
-  display: 'flex'
-})
-
-const GameIcon = styled.img({
-  width: '200px',
-  height: '150px'
-})
-
-const GameTitle = styled.span({
-  fontWeight: 'bold',
-  fontSize: 15
-})
-
-const GameIconButton = styled.button({
-  margin: 20,
-  padding: 0,
-  display: 'grid',
-  height: '185px'
-})

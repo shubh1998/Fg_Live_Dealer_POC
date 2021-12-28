@@ -1,6 +1,7 @@
-import { CountDownTimer } from '../../../components/CountDownTimer/CountDownTimer'
-import { BetCoin, BetSideTitle, BettingAmountOptions, FlexContainer, GameContainer, GameIcon, HalfContainer, Notifier, Root, TimerDiv } from './DragonTiger.styles'
-import { userDragonTiger } from './hooks/userDragonTiger'
+import { CountDownTimer } from '../../../components/CountDownTimer'
+import { Notifier } from '../../../components/Notifier'
+import { BetCoin, BetSideTitle, BettingAmountOptions, FlexContainer, GameContainer, GameIcon, HalfContainer, Root, TimerDiv } from './DragonTiger.styles'
+import { userDragonTigerController } from './hooks/userDragonTigerController'
 
 export const DragonTiger = () => {
   const {
@@ -11,14 +12,12 @@ export const DragonTiger = () => {
     handleSelectedBetCoin,
     handleUndoOperation,
     handleBet
-  } = userDragonTiger()
+  } = userDragonTigerController()
 
   return (
     <Root>
       <GameContainer>
-        <Notifier isActive={isBetActive}>
-          {isBetActive ? 'Betting time is ACTIVE' : 'Betting time is CLOSE'}
-        </Notifier>
+        <Notifier isActive={isBetActive} />
         <FlexContainer className='betting-option'>
           <HalfContainer onClick={() => handleBet(OperationType.DRAGON)}>
             <GameIcon src='game-icon/dragon.svg' alt='dragon_icon' />

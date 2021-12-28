@@ -1,149 +1,29 @@
-import React, { useReducer, useState, useEffect } from 'react'
-import styled from '@emotion/styled'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import { v4 as uuidv4 } from 'uuid'
-import { ShowBetDetail } from '../../components/ShowBetDetail'
-import { CountDownTimer } from '../../components/CountDownTimer/CountDownTimer'
+import { ShowBetDetail } from '../../../components/ShowBetDetail'
+import { CountDownTimer } from '../../../components/CountDownTimer'
+import { useSicboController } from './hooks/useSicboController'
+import { Notifier } from '../../../components/Notifier'
+import { BetCoin, BettingAmountOptions, GameContainer, InnerItem, Item, OptionsContainer, Root, TimerDiv } from './Sicbo.Styles'
 
-const OperationType = {
-  oddEven: 'oddEven',
-  bigSmall: 'bigSmall',
-  exactDouble: 'exactDouble',
-  exactTriple: 'exactTriple',
-  anyTriple: 'anyTriple',
-  allDiceSum: 'allDiceSum',
-  twoDiceBet: 'twoDiceBet',
-  oneDiceBet: 'oneDiceBet',
-  double: 'double'
-}
-
-const TRIPLE_SUM_DICE_ARRAY = Array.from({ length: 14 }, (_, i) => i + 4)
-const SINGLE_DICE_ARRAY = Array.from({ length: 6 }, (_, i) => i + 1)
-
-const DOUBLE_DICE_COMBINATION = []
-for (let i = 1; i <= 6; i++) {
-  for (let j = i + 1; j <= 6; j++) {
-    DOUBLE_DICE_COMBINATION.push({
-      i, j
-    })
-  }
-}
-
-const DOUBLE_DICE_INITIAL_VALUE = {}
-
-DOUBLE_DICE_COMBINATION.forEach(({ i, j }) => {
-  DOUBLE_DICE_INITIAL_VALUE[`${i}_${j}`] = 0
-})
-
-const casinoTokens = [0.2, 1, 5, 20, 100, 200]
-
-const initialState = {
-  selectedBetCoin: null,
-  oddEven: { odd: 0, even: 0 },
-  bigSmall: { big: 0, small: 0 },
-  exactDouble: { one: 0, two: 0, three: 0, four: 0, five: 0, six: 0 },
-  exactTriple: { one: 0, two: 0, three: 0, four: 0, five: 0, six: 0 },
-  anyTriple: { value: 0 },
-  allDiceSum: {
-    4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 0, 16: 0, 17: 0
-  },
-  twoDiceBet: DOUBLE_DICE_INITIAL_VALUE,
-  oneDiceBet: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 },
-  betSequence: []
-}
-
-const SicBo = () => {
-  const [isBetActive, setIsBetActive] = useState(true)
-  const [SBState, setState] = useReducer(
-    (state, newState) => ({
-      ...state,
-      ...newState
-    }),
-    initialState
-  )
-
-  useEffect(() => {
-    setInterval(() => {
-      setIsBetActive((prev) => !prev)
-    }, 10000)
-  }, [])
-
-  useEffect(
-    () => {
-      if (isBetActive) {
-        setState(initialState)
-      }
-    }, [isBetActive]
-  )
-
-  const handlerUndoOperation = () => {
-    const lastBet = SBState.betSequence[SBState.betSequence.length - 1]
-    setState({ betSequence: SBState.betSequence.slice(0, -1) })
-
-    if (lastBet.type !== OperationType.double) {
-      setState({
-        [lastBet.type]: { ...SBState[lastBet.type], [lastBet.betOn]: SBState[lastBet.type][lastBet.betOn] - lastBet.betValue }
-      })
-    } else if (lastBet.type === OperationType.double) {
-      for (const property in SBState) {
-        if (property !== 'selectedBetCoin' && property !== 'betSequence') {
-          const newObj = {}
-          for (const innerProp in SBState[property]) {
-            newObj[innerProp] = SBState[property][innerProp] / 2
-          }
-          setState({
-            [property]: newObj
-          })
-        }
-      }
-    }
-  }
-
-  const handleBet = (type, betOn) => {
-    if (!isBetActive) {
-      return
-    }
-    if (!SBState.selectedBetCoin) {
-      alert('Please select betting amount')
-      return
-    }
-    if (type !== OperationType.double) {
-      setState({
-        [type]: { ...SBState[type], [betOn]: SBState[type][betOn] + SBState.selectedBetCoin }
-      })
-    } else if (type === OperationType.double) {
-      for (const property in SBState) {
-        if (property !== 'selectedBetCoin' && property !== 'betSequence') {
-          const newObj = {}
-          for (const innerProp in SBState[property]) {
-            newObj[innerProp] = SBState[property][innerProp] * 2
-          }
-          setState({
-            [property]: newObj
-          })
-        }
-      }
-    }
-
-    setState({
-      betSequence: [
-        ...SBState.betSequence,
-        { id: uuidv4(), type, betOn, betValue: SBState.selectedBetCoin }
-      ]
-    })
-  }
-  const handleSelectedBetCoin = (betCoin) => {
-    setState({ selectedBetCoin: betCoin })
-  }
+export const SicBo = () => {
+  const {
+    isBetActive,
+    SBState,
+    OperationType,
+    TRIPLE_SUM_DICE_ARRAY,
+    SINGLE_DICE_ARRAY,
+    casinoTokens,
+    handleUndoOperation,
+    handleBet,
+    handleSelectedBetCoin,
+    DOUBLE_DICE_COMBINATION
+  } = useSicboController()
 
   return (
     <Root>
       <GameContainer>
-        <Notifier isActive={isBetActive}>
-          {isBetActive ? 'Betting time is ACTIVE' : 'Betting time is CLOSE'}
-        </Notifier>
-        <Box sx={{ flexGrow: 1 }}>
+        <Box>
           <Grid container spacing={1}>
             <Grid item xs={2}>
               <Grid container spacing={1}>
@@ -375,11 +255,12 @@ const SicBo = () => {
           </div>
         </Box>
       </GameContainer>
+      <Notifier isActive={isBetActive} />
       <OptionsContainer>
         <BettingAmountOptions className='casino-coin'>
           <button
             disabled={!SBState.betSequence.length || !isBetActive}
-            onClick={handlerUndoOperation}
+            onClick={handleUndoOperation}
           >
             Undo
           </button>
@@ -410,65 +291,3 @@ const SicBo = () => {
     </Root>
   )
 }
-
-export default SicBo
-
-const Root = styled.div({
-  // display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center'
-})
-
-const Item = styled.div(({ height, width, margin }) => ({
-  textAlign: 'center',
-  border: '3px solid gray',
-  backgroundColor: 'wheat',
-  justifyContent: 'center',
-  width: width || '100%',
-  margin: margin || 'auto',
-  height: height || 170,
-  display: 'flex',
-  alignItems: 'center'
-}))
-
-const InnerItem = styled.div({
-  display: 'block'
-})
-
-const GameContainer = styled.div({
-  width: 1500,
-  margin: 50,
-  border: '4px solid black'
-})
-
-const OptionsContainer = styled.div({
-  border: '1px solid black',
-  padding: '2%',
-  width: 'fit-content',
-  margin: 'auto'
-})
-
-export const BettingAmountOptions = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  width: 400,
-  margin: 'auto'
-})
-
-export const BetCoin = styled.button(({ selectedButton }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  border: selectedButton ? '2px solid black' : 'none'
-}))
-
-export const TimerDiv = styled.div({
-  margin: '20px auto 0',
-  width: 50
-})
-
-export const Notifier = styled.strong(({ isActive }) => ({
-  textAlign: 'center',
-  display: 'block',
-  color: isActive ? 'green' : 'red'
-}))

@@ -1,11 +1,5 @@
 import styled from '@emotion/styled'
 
-export const Notifier = styled.strong(({ isActive }) => ({
-  textAlign: 'center',
-  display: 'block',
-  color: isActive ? 'green' : 'red'
-}))
-
 export const Root = styled.div({
   display: 'flex',
   justifyContent: 'center',

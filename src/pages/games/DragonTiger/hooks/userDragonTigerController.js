@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
-export const userDragonTiger = () => {
+export const userDragonTigerController = () => {
   const OperationType = {
     TIGER: 'TIGER',
     DRAGON: 'DRAGON',
