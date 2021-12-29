@@ -1,4 +1,5 @@
 import { DragonTiger } from '../pages/games/DragonTiger/DragonTiger'
+import { Roulette } from '../pages/games/Roulette/Roulette'
 import { SicBo } from '../pages/games/SicBo/SicBo'
 import { Home } from '../pages/Home/Home'
 
@@ -22,6 +23,13 @@ const routerList = [
     label: 'SicBo',
     path: '/sicbo',
     component: SicBo,
+    hasNavbar: true
+  },
+  {
+    key: 3,
+    label: 'Roulette',
+    path: '/roulette',
+    component: Roulette,
     hasNavbar: true
   }
 ]

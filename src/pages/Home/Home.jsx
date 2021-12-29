@@ -18,7 +18,7 @@ export const Home = () => {
 
       <GameIconButton
         onClick={() => {
-          window.location.href = `${window.location.origin}/dragon-tiger`
+          window.location.href = `${window.location.origin}/roulette`
         }}
       >
         <GameIcon src='game-icon/roulette-logo.png' alt='roulette_icon' />
