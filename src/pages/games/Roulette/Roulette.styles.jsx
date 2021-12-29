@@ -11,9 +11,9 @@ export const GameContainer = styled.div({
   padding: '10px'
 })
 
-export const PentagonBlock = styled.div({
+export const PentagonBlock = styled.div(({ hover }) => ({
   width: '120px',
-  height: '200px',
+  height: '190px',
   background: 'green',
   '-webkit-clip-path': 'polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%)',
   'clip-path': 'polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%)',
@@ -21,8 +21,12 @@ export const PentagonBlock = styled.div({
   alignItems: 'center',
   justifyContent: 'center',
   display: 'flex',
-  cursor: 'pointer'
-})
+  cursor: 'pointer',
+  boxShadow: hover ? 'inset 0 0 100px 100px rgba(255, 255, 255, 0.4)' : 'none',
+  '&:hover': {
+    boxShadow: 'inset 0 0 100px 100px rgba(255, 255, 255, 0.4)'
+  }
+}))
 
 export const ZeroInfoContainer = styled.div(({ blockColor }) => ({
   color: 'white'
@@ -36,7 +40,10 @@ export const InfoContainer = styled.div(({ height }) => ({
   cursor: 'pointer',
   backgroundColor: '#000000',
   color: 'white',
-  height: height || '40px'
+  height: height || '40px',
+  '&:hover': {
+    boxShadow: 'inset 0 0 100px 100px rgba(255, 255, 255, 0.4)'
+  }
 }))
 
 export const BettingAmountOptions = styled.div({
@@ -50,7 +57,14 @@ export const BetCoin = styled.button(({ selectedButton }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  border: selectedButton ? '2px solid black' : 'none'
+  border: selectedButton ? '2px solid black' : 'none',
+  fontWeight: 800,
+  cursor: 'pointer',
+  color: 'black',
+  backgroundColor: '#ebeb34',
+  width: '30px',
+  height: '30px',
+  borderRadius: '50%'
 }))
 
 export const OptionsContainer = styled.div({

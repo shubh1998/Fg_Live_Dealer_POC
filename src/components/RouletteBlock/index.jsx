@@ -6,43 +6,97 @@ export const RouletteBlock = ({
   blockColor,
   singleBetPlaceFunction,
   twelveNumberBetFunction,
-  placeBetCoin
+  placeBetCoin,
+  clickWall,
+  leftSideHandler,
+  twoNumberBetPlaced,
+  handleCorner,
+  threeOrFourBetPlaced,
+  handleBottom,
+  twoOrThreeBetPlaced,
+  handleSideHover,
+  hover,
+  handleHoverOut,
+  handleCornerHover,
+  handleCornerHoverOut,
+  handleBottomHover
 }) => {
-  const onClickHandler = (type) => {
-    console.log(type)
-  }
-
   return (
     <>
-      {/* top border */}
       <DivBlockContainer>
-        <CornerBorderDiv onClick={() => onClickHandler('Top left corner')} />
-        <TopAndBottomBorderDiv onClick={() => onClickHandler('Top border')} />
-        <CornerBorderDiv onClick={() => onClickHandler('Top right corner')} />
-      </DivBlockContainer>
-      {/** Center content with border */}
-      <DivBlockContainer>
-        <SideBorderDiv onClick={() => onClickHandler('Left border')} />
-        <InfoContainer onClick={singleBetPlaceFunction} blockColor={blockColor}>
+        <div style={{ position: 'relative' }}>
+          <SideBorderDiv
+            onMouseOver={handleSideHover}
+            onMouseOut={handleHoverOut}
+            onClick={leftSideHandler}
+          />
+          {
+            twoNumberBetPlaced !== 0 && (
+              <PlaceBetCoinContainer>
+                <PlacedBetCoin
+                  onMouseOver={handleSideHover}
+                  onMouseOut={handleHoverOut}
+                  onClick={leftSideHandler}
+                >
+                  {twoNumberBetPlaced}
+                </PlacedBetCoin>
+              </PlaceBetCoinContainer>
+            )
+          }
+        </div>
+        <InfoContainer onClick={singleBetPlaceFunction} blockColor={blockColor} hover={hover}>
           <div>
             {contentValue}
             {placeBetCoin}
           </div>
         </InfoContainer>
-        <SideBorderDiv onClick={() => onClickHandler('Right border')} />
       </DivBlockContainer>
-      {/* bottom border */}
       <DivBlockContainer>
-        <CornerBorderDiv onClick={() => onClickHandler('Bottom left corner')} />
-        <TopAndBottomBorderDiv onClick={() => onClickHandler('Bottom border')} />
-        <CornerBorderDiv onClick={() => onClickHandler('Bottom right corner')} />
+        <div style={{ position: 'relative' }}>
+          <CornerBorderDiv
+            onMouseOver={handleCornerHover}
+            onMouseOut={handleHoverOut}
+            onClick={handleCorner}
+          />
+          {
+            threeOrFourBetPlaced !== 0 && (
+              <PlaceBetCoinContainer bottom='-12px' top='-12px'>
+                <PlacedBetCoin
+                  onClick={handleCorner}
+                  onMouseOver={handleCornerHover}
+                  onMouseOut={handleHoverOut}
+                >
+                  {threeOrFourBetPlaced}
+                </PlacedBetCoin>
+              </PlaceBetCoinContainer>
+            )
+          }
+        </div>
+        <TopAndBottomBorderDiv
+          onClick={handleBottom}
+          onMouseOver={handleBottomHover}
+          onMouseOut={handleHoverOut}
+        >
+          {
+            twoOrThreeBetPlaced !== 0 && (
+              <PlaceBetCoinContainer left='34%' top='-12px'>
+                <PlacedBetCoin
+                  onMouseOver={handleBottomHover}
+                  onMouseOut={handleHoverOut}
+                >
+                  {twoOrThreeBetPlaced}
+                </PlacedBetCoin>
+              </PlaceBetCoinContainer>
+            )
+          }
+        </TopAndBottomBorderDiv>
       </DivBlockContainer>
     </>
   )
 }
 
 const CornerBorderDiv = styled.div({
-  backgroundColor: '#ffffff',
+  backgroundColor: 'white',
   height: '3px',
   width: '5px',
   cursor: 'pointer'
@@ -50,8 +104,9 @@ const CornerBorderDiv = styled.div({
 
 const TopAndBottomBorderDiv = styled.div({
   backgroundColor: '#ffffff',
-  height: '3px',
+  height: '5px',
   width: '96%',
+  position: 'relative',
   cursor: 'pointer'
 })
 
@@ -66,12 +121,36 @@ const DivBlockContainer = styled.div({
   display: 'flex'
 })
 
-const InfoContainer = styled.div(({ blockColor }) => ({
+const InfoContainer = styled.div(({ blockColor, hover }) => ({
   width: '96%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   cursor: 'pointer',
   backgroundColor: blockColor,
-  color: 'white'
+  color: 'white',
+  boxShadow: hover ? 'inset 0 0 100px 100px rgba(255, 255, 255, 0.4)' : 'none',
+  '&:hover': {
+    boxShadow: 'inset 0 0 100px 100px rgba(255, 255, 255, 0.4)'
+  }
 }))
+
+const PlaceBetCoinContainer = styled.div(({ top, bottom, left }) => ({
+  position: 'absolute',
+  top: top || '25%',
+  left: left || '-12px',
+  bottom: bottom || '0',
+  zIndex: 1
+}))
+
+const PlacedBetCoin = styled.div({
+  color: 'blue',
+  display: 'flex',
+  backgroundColor: '#ebeb34',
+  width: '30px',
+  height: '30px',
+  borderRadius: '50%',
+  justifyContent: 'center',
+  alignItems: 'center',
+  cursor: 'pointer'
+})
