@@ -343,7 +343,7 @@ export const SicBo = () => {
           </div>
         </Box>
       </GameContainer>
-      <Notifier isActive={isBetActive} />
+      <Notifier isBetActive={isBetActive} />
       <OptionsContainer>
         <BettingAmountOptions className='casino-coin'>
           <button

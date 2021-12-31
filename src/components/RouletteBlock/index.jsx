@@ -31,7 +31,7 @@ export const RouletteBlock = ({
             onClick={leftSideHandler}
           />
           {
-            twoNumberBetPlaced !== 0 && (
+            twoNumberBetPlaced && (
               <PlaceBetCoinContainer>
                 <PlacedBetCoin
                   onMouseOver={handleSideHover}
@@ -59,7 +59,7 @@ export const RouletteBlock = ({
             onClick={handleCorner}
           />
           {
-            threeOrFourBetPlaced !== 0 && (
+            threeOrFourBetPlaced && (
               <PlaceBetCoinContainer bottom='-12px' top='-12px'>
                 <PlacedBetCoin
                   onClick={handleCorner}
@@ -78,7 +78,7 @@ export const RouletteBlock = ({
           onMouseOut={handleHoverOut}
         >
           {
-            twoOrThreeBetPlaced !== 0 && (
+            twoOrThreeBetPlaced && (
               <PlaceBetCoinContainer left='34%' top='-12px'>
                 <PlacedBetCoin
                   onMouseOver={handleBottomHover}

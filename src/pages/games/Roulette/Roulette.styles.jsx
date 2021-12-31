@@ -84,3 +84,8 @@ export const PlacedBetCoin = styled.div({
   justifyContent: 'center',
   alignItems: 'center'
 })
+
+export const TimerDiv = styled.div({
+  margin: '20px auto 0',
+  width: 50
+})

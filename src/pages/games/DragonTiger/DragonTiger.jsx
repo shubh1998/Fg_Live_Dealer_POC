@@ -20,7 +20,7 @@ export const DragonTiger = () => {
   return (
     <Root>
       <GameContainer>
-        <Notifier isActive={isBetActive} />
+        <Notifier isBetActive={isBetActive} />
         <FlexContainer className='betting-option'>
           <HalfContainer onClick={() => handleBet({
             betId: uuidv4(),

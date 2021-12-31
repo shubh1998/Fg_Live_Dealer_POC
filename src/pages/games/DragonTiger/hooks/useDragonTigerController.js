@@ -50,6 +50,9 @@ export const useDragonTigerController = () => {
       alert('Please select betting amount')
       return
     }
+    if (!isBetActive) {
+      return
+    }
     const betObject = {
       ...item,
       betAmount: DTState.selectedBetCoin

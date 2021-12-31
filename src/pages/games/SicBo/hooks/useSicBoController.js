@@ -85,6 +85,10 @@ export const useSicBoController = () => {
       alert('Please select betting amount')
       return
     }
+
+    if (!isBetActive) {
+      return
+    }
     const betObject = {
       ...item,
       betAmount: SBState.selectedBetCoin
