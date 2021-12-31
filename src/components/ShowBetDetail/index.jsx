@@ -4,13 +4,30 @@ import styled from '@emotion/styled'
 export const ShowBetDetail = ({ title, betValue, payout }) => {
   return (
     <InnerItem>
-      <p>{title}</p>
-      <b>{betValue !== 0 && betValue.toFixed(1).replace(/[.,]0$/, '')}</b>
+      {betValue && (
+        <PlacedBetCoin>
+          {betValue}
+        </PlacedBetCoin>)}
+      {title}
       <div>{payout && payout}</div>
     </InnerItem>
+
   )
 }
 
 const InnerItem = styled.div({
   display: 'block'
+})
+
+const PlacedBetCoin = styled.div({
+  color: 'blue',
+  display: 'flex',
+  backgroundColor: '#ebeb34',
+  width: '30px',
+  height: '30px',
+  borderRadius: '50%',
+  justifyContent: 'center',
+  alignItems: 'center',
+  cursor: 'pointer',
+  margin: 'auto'
 })

@@ -2,23 +2,24 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import { ShowBetDetail } from '../../../components/ShowBetDetail'
 import { CountDownTimer } from '../../../components/CountDownTimer'
-import { useSicboController } from './hooks/useSicboController'
 import { Notifier } from '../../../components/Notifier'
-import { BetCoin, BettingAmountOptions, GameContainer, InnerItem, Item, OptionsContainer, Root, TimerDiv } from './Sicbo.Styles'
+import { BetCoin, BettingAmountOptions, GameContainer, Item, OptionsContainer, Root, TimerDiv } from './Sicbo.Styles'
+
+import { v4 as uuidv4 } from 'uuid'
+import { useSicBoController } from './hooks/useSicBoController'
 
 export const SicBo = () => {
   const {
-    isBetActive,
     SBState,
+    isBetActive,
     OperationType,
-    TRIPLE_SUM_DICE_ARRAY,
-    SINGLE_DICE_ARRAY,
-    casinoTokens,
-    handleUndoOperation,
+    SICBO_GAME_DATA,
     handleBet,
     handleSelectedBetCoin,
-    DOUBLE_DICE_COMBINATION
-  } = useSicboController()
+    handleUndo,
+    handleDouble,
+    displayBetAmount
+  } = useSicBoController()
 
   return (
     <Root>
@@ -28,21 +29,28 @@ export const SicBo = () => {
             <Grid item xs={2}>
               <Grid container spacing={1}>
                 <Grid item xs={8}>
-                  <Item onClick={() => handleBet(OperationType.bigSmall, 'small')}>
+                  <Item onClick={() => handleBet({
+                    betId: uuidv4(),
+                    betType: OperationType.SMALL
+                  })}
+                  >
                     <ShowBetDetail
                       title='Small(4-10)'
-                      betValue={SBState.bigSmall.small}
+                      betValue={displayBetAmount(OperationType.SMALL)}
                     />
                   </Item>
                 </Grid>
                 <Grid item xs={4}>
                   <Item
-                    onClick={() => handleBet(OperationType.oddEven, 'odd')}
+                    onClick={() => handleBet({
+                      betId: uuidv4(),
+                      betType: OperationType.ODD
+                    })}
                   >
-                    <InnerItem>
-                      <p>Odd</p>
-                      <b>{SBState.oddEven.odd !== 0 && SBState.oddEven.odd}</b>
-                    </InnerItem>
+                    <ShowBetDetail
+                      title='ODD'
+                      betValue={displayBetAmount(OperationType.ODD)}
+                    />
                   </Item>
                 </Grid>
               </Grid>
@@ -52,27 +60,39 @@ export const SicBo = () => {
                 <Grid item xs={4}>
                   <Grid container spacing={1}>
                     <Grid item xs={4}>
-                      <Item onClick={() => handleBet(OperationType.exactDouble, 'one')}>
-                        <InnerItem>
-                          <p>Double 1</p>
-                          <b>{SBState.exactDouble.one !== 0 && SBState.exactDouble.one}</b>
-                        </InnerItem>
+                      <Item onClick={() => handleBet({
+                        betId: uuidv4(),
+                        betType: OperationType.DOUBLE_ONE
+                      })}
+                      >
+                        <ShowBetDetail
+                          title='Double 1'
+                          betValue={displayBetAmount(OperationType.DOUBLE_ONE)}
+                        />
                       </Item>
                     </Grid>
                     <Grid item xs={4}>
-                      <Item onClick={() => handleBet(OperationType.exactDouble, 'two')}>
-                        <InnerItem>
-                          <p>Double 2</p>
-                          <b>{SBState.exactDouble.two !== 0 && SBState.exactDouble.two}</b>
-                        </InnerItem>
+                      <Item onClick={() => handleBet({
+                        betId: uuidv4(),
+                        betType: OperationType.DOUBLE_TWO
+                      })}
+                      >
+                        <ShowBetDetail
+                          title='Double 2'
+                          betValue={displayBetAmount(OperationType.DOUBLE_TWO)}
+                        />
                       </Item>
                     </Grid>
                     <Grid item xs={4}>
-                      <Item onClick={() => handleBet(OperationType.exactDouble, 'three')}>
-                        <InnerItem>
-                          <p>Double 3</p>
-                          <b>{SBState.exactDouble.three !== 0 && SBState.exactDouble.three}</b>
-                        </InnerItem>
+                      <Item onClick={() => handleBet({
+                        betId: uuidv4(),
+                        betType: OperationType.DOUBLE_THREE
+                      })}
+                      >
+                        <ShowBetDetail
+                          title='Double 3'
+                          betValue={displayBetAmount(OperationType.DOUBLE_THREE)}
+                        />
                       </Item>
                     </Grid>
                   </Grid>
@@ -82,27 +102,45 @@ export const SicBo = () => {
                     <Grid item xs={4}>
                       <Grid container direction='column' spacing={1}>
                         <Grid item xs={12}>
-                          <Item onClick={() => handleBet(OperationType.exactTriple, 'one')} height={47}>
-                            <InnerItem>
-                              <div>Triple 1</div>
-                              <b>{SBState.exactTriple.one !== 0 && SBState.exactTriple.one}</b>
-                            </InnerItem>
+                          <Item
+                            height='47px'
+                            onClick={() => handleBet({
+                              betId: uuidv4(),
+                              betType: OperationType.TRIPLE_ONE
+                            })}
+                          >
+                            <ShowBetDetail
+                              title='Triple 1'
+                              betValue={displayBetAmount(OperationType.TRIPLE_ONE)}
+                            />
                           </Item>
                         </Grid>
                         <Grid item xs={12}>
-                          <Item onClick={() => handleBet(OperationType.exactTriple, 'two')} height={47}>
-                            <InnerItem>
-                              <div>Triple 2</div>
-                              <b>{SBState.exactTriple.two !== 0 && SBState.exactTriple.two}</b>
-                            </InnerItem>
+                          <Item
+                            height='47px'
+                            onClick={() => handleBet({
+                              betId: uuidv4(),
+                              betType: OperationType.TRIPLE_TWO
+                            })}
+                          >
+                            <ShowBetDetail
+                              title='Triple 2'
+                              betValue={displayBetAmount(OperationType.TRIPLE_TWO)}
+                            />
                           </Item>
                         </Grid>
                         <Grid item xs={12}>
-                          <Item onClick={() => handleBet(OperationType.exactTriple, 'three')} height={47}>
-                            <InnerItem>
-                              <div>Triple 3</div>
-                              <b>{SBState.exactTriple.three !== 0 && SBState.exactTriple.three}</b>
-                            </InnerItem>
+                          <Item
+                            height='47px'
+                            onClick={() => handleBet({
+                              betId: uuidv4(),
+                              betType: OperationType.TRIPLE_THREE
+                            })}
+                          >
+                            <ShowBetDetail
+                              title='Triple 3'
+                              betValue={displayBetAmount(OperationType.TRIPLE_THREE)}
+                            />
                           </Item>
                         </Grid>
                       </Grid>
@@ -110,11 +148,16 @@ export const SicBo = () => {
                     <Grid item xs={4}>
                       <Grid container direction='column' spacing={1}>
                         <Grid item xs={12}>
-                          <Item onClick={() => handleBet(OperationType.anyTriple, 'value')} height={168}>
-                            <InnerItem>
-                              <p>Any Triple</p>
-                              <b>{SBState.anyTriple.value !== 0 && SBState.anyTriple.value}</b>
-                            </InnerItem>
+                          <Item
+                            onClick={() => handleBet({
+                              betId: uuidv4(),
+                              betType: OperationType.TRIPLE_ANY
+                            })}
+                          >
+                            <ShowBetDetail
+                              title='Any Triple'
+                              betValue={displayBetAmount(OperationType.TRIPLE_ANY)}
+                            />
                           </Item>
                         </Grid>
                       </Grid>
@@ -122,27 +165,45 @@ export const SicBo = () => {
                     <Grid item xs={4}>
                       <Grid container spacing={1}>
                         <Grid item xs={12}>
-                          <Item onClick={() => handleBet(OperationType.exactTriple, 'four')} height={47}>
-                            <InnerItem>
-                              <div>Triple 4</div>
-                              <b>{SBState.exactTriple.four !== 0 && SBState.exactTriple.four}</b>
-                            </InnerItem>
+                          <Item
+                            height='47px'
+                            onClick={() => handleBet({
+                              betId: uuidv4(),
+                              betType: OperationType.TRIPLE_FOUR
+                            })}
+                          >
+                            <ShowBetDetail
+                              title='Triple 4'
+                              betValue={displayBetAmount(OperationType.TRIPLE_FOUR)}
+                            />
                           </Item>
                         </Grid>
                         <Grid item xs={12}>
-                          <Item onClick={() => handleBet(OperationType.exactTriple, 'five')} height={47}>
-                            <InnerItem>
-                              <div>Triple 5</div>
-                              <b>{SBState.exactTriple.five !== 0 && SBState.exactTriple.five}</b>
-                            </InnerItem>
+                          <Item
+                            height='47px'
+                            onClick={() => handleBet({
+                              betId: uuidv4(),
+                              betType: OperationType.TRIPLE_FIVE
+                            })}
+                          >
+                            <ShowBetDetail
+                              title='Triple 5'
+                              betValue={displayBetAmount(OperationType.TRIPLE_FIVE)}
+                            />
                           </Item>
                         </Grid>
                         <Grid item xs={12}>
-                          <Item onClick={() => handleBet(OperationType.exactTriple, 'six')} height={47}>
-                            <InnerItem>
-                              <div>Triple 6</div>
-                              <b>{SBState.exactTriple.six !== 0 && SBState.exactTriple.six}</b>
-                            </InnerItem>
+                          <Item
+                            height='47px'
+                            onClick={() => handleBet({
+                              betId: uuidv4(),
+                              betType: OperationType.TRIPLE_SIX
+                            })}
+                          >
+                            <ShowBetDetail
+                              title='Triple 6'
+                              betValue={displayBetAmount(OperationType.TRIPLE_SIX)}
+                            />
                           </Item>
                         </Grid>
                       </Grid>
@@ -152,27 +213,39 @@ export const SicBo = () => {
                 <Grid item xs={4}>
                   <Grid container spacing={1}>
                     <Grid item xs={4}>
-                      <Item onClick={() => handleBet(OperationType.exactDouble, 'four')}>
-                        <InnerItem>
-                          <p>Double 4</p>
-                          <b>{SBState.exactDouble.four !== 0 && SBState.exactDouble.four}</b>
-                        </InnerItem>
+                      <Item onClick={() => handleBet({
+                        betId: uuidv4(),
+                        betType: OperationType.DOUBLE_FOUR
+                      })}
+                      >
+                        <ShowBetDetail
+                          title='Double 4'
+                          betValue={displayBetAmount(OperationType.DOUBLE_FOUR)}
+                        />
                       </Item>
                     </Grid>
                     <Grid item xs={4}>
-                      <Item onClick={() => handleBet(OperationType.exactDouble, 'five')}>
-                        <InnerItem>
-                          <p>Double 5</p>
-                          <b>{SBState.exactDouble.five !== 0 && SBState.exactDouble.five}</b>
-                        </InnerItem>
+                      <Item onClick={() => handleBet({
+                        betId: uuidv4(),
+                        betType: OperationType.DOUBLE_FIVE
+                      })}
+                      >
+                        <ShowBetDetail
+                          title='Double 5'
+                          betValue={displayBetAmount(OperationType.DOUBLE_FIVE)}
+                        />
                       </Item>
                     </Grid>
                     <Grid item xs={4}>
-                      <Item onClick={() => handleBet(OperationType.exactDouble, 'six')}>
-                        <InnerItem>
-                          <p>Double 6</p>
-                          <b>{SBState.exactDouble.six !== 0 && SBState.exactDouble.six}</b>
-                        </InnerItem>
+                      <Item onClick={() => handleBet({
+                        betId: uuidv4(),
+                        betType: OperationType.DOUBLE_SIX
+                      })}
+                      >
+                        <ShowBetDetail
+                          title='Double 6'
+                          betValue={displayBetAmount(OperationType.DOUBLE_SIX)}
+                        />
                       </Item>
                     </Grid>
                   </Grid>
@@ -185,21 +258,27 @@ export const SicBo = () => {
             <Grid item xs={2}>
               <Grid container spacing={1}>
                 <Grid item xs={4}>
-                  <Item onClick={() => handleBet(OperationType.oddEven, 'even')}>
-                    <InnerItem>
-                      <p>Even</p>
-                      <b>{SBState.oddEven.even !== 0 && SBState.oddEven.even}</b>
-                    </InnerItem>
+                  <Item onClick={() => handleBet({
+                    betId: uuidv4(),
+                    betType: OperationType.EVEN
+                  })}
+                  >
+                    <ShowBetDetail
+                      title='EVEN'
+                      betValue={displayBetAmount(OperationType.EVEN)}
+                    />
                   </Item>
                 </Grid>
                 <Grid item xs={8}>
-                  <Item
-                    onClick={() => handleBet(OperationType.bigSmall, 'big')}
+                  <Item onClick={() => handleBet({
+                    betId: uuidv4(),
+                    betType: OperationType.BIG
+                  })}
                   >
-                    <InnerItem>
-                      <p>Big(11-17)</p>
-                      <b>{SBState.bigSmall.big !== 0 && SBState.bigSmall.big}</b>
-                    </InnerItem>
+                    <ShowBetDetail
+                      title='BIG(11-17)'
+                      betValue={displayBetAmount(OperationType.BIG)}
+                    />
                   </Item>
                 </Grid>
               </Grid>
@@ -207,48 +286,57 @@ export const SicBo = () => {
           </Grid>
           <div style={{ display: 'flex', padding: '1px' }}>
             {
-              TRIPLE_SUM_DICE_ARRAY.map(
+              SICBO_GAME_DATA.TRIPLE_SUM_DICE_ARRAY.map(
                 (item) =>
                   <Item
-                    onClick={() => handleBet(OperationType.allDiceSum, item)}
+                    onClick={() => handleBet({
+                      betId: uuidv4(),
+                      betType: `${OperationType.THREE_DICE_SUM}_${item}`
+                    })}
                     key={item} height={80} margin={2}
                   >
-                    <InnerItem>
-                      <p>{item}</p>
-                      <b>{SBState[OperationType.allDiceSum][item] !== 0 && SBState[OperationType.allDiceSum][item]}</b>
-                    </InnerItem>
+                    <ShowBetDetail
+                      title={item}
+                      betValue={displayBetAmount(`${OperationType.THREE_DICE_SUM}_${item}`)}
+                    />
                   </Item>
               )
             }
           </div>
           <div style={{ display: 'flex', padding: '1px' }}>
             {
-              DOUBLE_DICE_COMBINATION.map(
+              SICBO_GAME_DATA.DOUBLE_DICE_COMBINATION.map(
                 ({ i, j }) =>
                   <Item
-                    onClick={() => handleBet(OperationType.twoDiceBet, `${i}_${j}`)}
+                    onClick={() => handleBet({
+                      betId: uuidv4(),
+                      betType: `${OperationType.DOUBLE_DICE_COMBINATION}_${i}_${j}`
+                    })}
                     key={`${i}_${j}`} height={140} margin={2}
                   >
-                    <InnerItem>
-                      <p>{i}+{j}</p>
-                      <b>{SBState[OperationType.twoDiceBet][`${i}_${j}`] !== 0 && SBState[OperationType.twoDiceBet][`${i}_${j}`]}</b>
-                    </InnerItem>
+                    <ShowBetDetail
+                      title={`${i}+ ${j}`}
+                      betValue={displayBetAmount(`${OperationType.DOUBLE_DICE_COMBINATION}_${i}_${j}`)}
+                    />
                   </Item>
               )
             }
           </div>
           <div style={{ display: 'flex', padding: '1px' }}>
             {
-              SINGLE_DICE_ARRAY.map(
+              SICBO_GAME_DATA.SINGLE_DICE_ARRAY.map(
                 (item) =>
                   <Item
-                    onClick={() => handleBet(OperationType.oneDiceBet, item)}
+                    onClick={() => handleBet({
+                      betId: uuidv4(),
+                      betType: `${OperationType.SINGLE_DICE}_${item}`
+                    })}
                     key={item} height={100} margin={4}
                   >
-                    <InnerItem>
-                      <p>{item}</p>
-                      <b>{SBState[OperationType.oneDiceBet][item] !== 0 && SBState[OperationType.oneDiceBet][item]}</b>
-                    </InnerItem>
+                    <ShowBetDetail
+                      title={item}
+                      betValue={displayBetAmount(`${OperationType.SINGLE_DICE}_${item}`)}
+                    />
                   </Item>
               )
             }
@@ -259,13 +347,13 @@ export const SicBo = () => {
       <OptionsContainer>
         <BettingAmountOptions className='casino-coin'>
           <button
-            disabled={!SBState.betSequence.length || !isBetActive}
-            onClick={handleUndoOperation}
+            disabled={!SBState.previousGameStates.length || !isBetActive}
+            onClick={handleUndo}
           >
             Undo
           </button>
 
-          {casinoTokens.map((token, index) => (
+          {SICBO_GAME_DATA.casinoTokens.map((token, index) => (
             <BetCoin
               key={index}
               disabled={!isBetActive}
@@ -276,18 +364,20 @@ export const SicBo = () => {
             </BetCoin>
           ))}
           <button
-            onClick={() => handleBet(OperationType.double, 'double')}
-            disabled={!SBState.betSequence.length || !isBetActive}
+            onClick={handleDouble}
+            disabled={!SBState.currentGameStates.length || !isBetActive}
           >
             Double
           </button>
         </BettingAmountOptions>
       </OptionsContainer>
-      {isBetActive && (
-        <TimerDiv>
-          <CountDownTimer countDownTime={10} />
-        </TimerDiv>
-      )}
+      {
+        isBetActive && (
+          <TimerDiv>
+            <CountDownTimer countDownTime={10} />
+          </TimerDiv>
+        )
+      }
     </Root>
   )
 }
