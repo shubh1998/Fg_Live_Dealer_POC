@@ -1,14 +1,9 @@
 import { cloneDeep } from 'lodash'
 import { useEffect, useReducer, useState } from 'react'
+import DragonTigerOperation from '../../../../utils/game-operations/DragonTiger'
+import { v4 as uuidv4 } from 'uuid'
 
 export const useDragonTigerController = () => {
-  const OperationType = {
-    TIGER: 'TIGER',
-    DRAGON: 'DRAGON',
-    TIE: 'TIE',
-    SUITED_TIE: 'SUITED_TIE'
-  }
-
   const DRAGON_TIGER_GAME_DATA = {
     casinoTokens: [0.2, 1, 5, 20, 100, 200]
   }
@@ -45,7 +40,7 @@ export const useDragonTigerController = () => {
     }, [isBetActive]
   )
 
-  const handleBet = (item) => {
+  const handleBet = ({ betType }) => {
     if (!DTState.selectedBetCoin) {
       alert('Please select betting amount')
       return
@@ -54,7 +49,8 @@ export const useDragonTigerController = () => {
       return
     }
     const betObject = {
-      ...item,
+      betId: uuidv4(),
+      betType,
       betAmount: DTState.selectedBetCoin
     }
     setState({
@@ -83,26 +79,14 @@ export const useDragonTigerController = () => {
     })
   }
 
-  const displayBetAmount = (betType) => {
-    let sum = 0
-    DTState.currentGameStates.forEach((item) => {
-      if (item.betType === betType) {
-        sum = sum + item.betAmount
-      }
-    })
-    if (sum !== 0) return sum.toFixed(1).replace(/[.,]0$/, '')
-    return ''
-  }
-
   return {
     DTState,
     isBetActive,
-    OperationType,
+    DragonTigerOperation,
     DRAGON_TIGER_GAME_DATA,
     handleBet,
     handleSelectedBetCoin,
     handleUndo,
-    handleDouble,
-    displayBetAmount
+    handleDouble
   }
 }

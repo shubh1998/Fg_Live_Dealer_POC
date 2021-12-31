@@ -1,21 +1,9 @@
 import { cloneDeep } from 'lodash'
 import { useReducer, useState, useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import RouletteOperations from '../../../../utils/game-operations/Roulette'
 
 export const useRouletteController = () => {
-  const OperationType = {
-    singleNumberBet: 'bet_singleNumberBet',
-    twoNumberBet: 'bet_twoNumberBet',
-    threeNumberBet: 'bet_threeNumberBet',
-    fourNumberBet: 'bet_fourNumberBet',
-    sixNumberBet: 'bet_sixNumberBet',
-    twelveNumberBet: 'bet_twelveNumberBet',
-    rowViseBet: 'bet_rowViseBet',
-    evenOddBet: 'bet_evenOddBet',
-    rangeBet: 'bet_rangeBet',
-    colorBet: 'bet_colorBet'
-  }
-
   const hoverTypesAndStatus = {
     sideHover: 'sideHover',
     cornerHover: 'cornerHover',
@@ -40,44 +28,44 @@ export const useRouletteController = () => {
     LAST_BET_ROW: [
       {
         label: '1-18',
-        type: OperationType.rangeBet
+        type: RouletteOperations.rangeBet
       },
       {
         label: 'EVEN',
-        type: OperationType.evenOddBet
+        type: RouletteOperations.evenOddBet
       },
       {
         label: 'RED',
-        type: OperationType.colorBet
+        type: RouletteOperations.colorBet
       },
       {
         label: 'BLACK',
-        type: OperationType.colorBet
+        type: RouletteOperations.colorBet
       },
       {
         label: 'ODD',
-        type: OperationType.evenOddBet
+        type: RouletteOperations.evenOddBet
       },
       {
         label: '19-36',
-        type: OperationType.rangeBet
+        type: RouletteOperations.rangeBet
       }
     ],
     SIDE_ROW_BETS: [
       {
         label: 'row_1',
         value: '2 To 1',
-        type: OperationType.rowViseBet
+        type: RouletteOperations.rowViseBet
       },
       {
         label: 'row_2',
         value: '2 To 1',
-        type: OperationType.rowViseBet
+        type: RouletteOperations.rowViseBet
       },
       {
         label: 'row_3',
         value: '2 To 1',
-        type: OperationType.rowViseBet
+        type: RouletteOperations.rowViseBet
       }
     ],
     casinoTokens: [0.2, 1, 5, 20, 100, 200]
@@ -116,7 +104,7 @@ export const useRouletteController = () => {
     }, [isBetActive]
   )
 
-  const handleBet = (item) => {
+  const handleBet = ({ betType }) => {
     if (!RState.selectedBetCoin) {
       alert('Please select betting amount')
       return
@@ -125,7 +113,8 @@ export const useRouletteController = () => {
       return
     }
     const betObject = {
-      ...item,
+      betId: uuidv4(),
+      betType,
       betAmount: RState.selectedBetCoin
     }
     setState({
@@ -154,17 +143,6 @@ export const useRouletteController = () => {
     })
   }
 
-  const displayBetAmount = (betType) => {
-    let sum = 0
-    RState.currentGameStates.forEach((item) => {
-      if (item.betType === betType) {
-        sum = sum + item.betAmount
-      }
-    })
-    if (sum !== 0) return sum.toFixed(1).replace(/[.,]0$/, '')
-    return ''
-  }
-
   const formatTwoNumberBetOn = ({ item, index }) => {
     let betOn = `${item}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 1]}`
     if (index === 0 || index === 12 || index === 24) {
@@ -174,27 +152,23 @@ export const useRouletteController = () => {
   }
 
   const formatBottomBet = ({ item, index }) => {
-    const betId = uuidv4()
-    let betType = `${OperationType.twoNumberBet}_${item}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index + 12]}`
+    let betType = `${RouletteOperations.twoNumberBet}_${item}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index + 12]}`
     if (index > 23) {
-      betType = `${OperationType.threeNumberBet}_${item}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 12]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 24]}`
+      betType = `${RouletteOperations.threeNumberBet}_${item}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 12]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 24]}`
     }
-    const returnObj = { betId, betType }
-    return returnObj
+    return betType
   }
 
   const checkThreeOrFourBetPlaced = ({ item, index }) => {
-    const betId = uuidv4()
-    let betType = `${OperationType.fourNumberBet}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 1]}_${item}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index + 11]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index + 12]}`
+    let betType = `${RouletteOperations.fourNumberBet}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 1]}_${item}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index + 11]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index + 12]}`
     if (index === 0 || index === 12) {
-      betType = `${OperationType.threeNumberBet}_0_${item}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index + 12]}`
+      betType = `${RouletteOperations.threeNumberBet}_0_${item}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index + 12]}`
     } else if (index === 24) {
-      betType = `${OperationType.fourNumberBet}_0_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 12]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 24]}_${item}`
+      betType = `${RouletteOperations.fourNumberBet}_0_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 12]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 24]}_${item}`
     } else if (index > 24) {
-      betType = `${OperationType.sixNumberBet}_${item}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 1]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 12]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 13]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 24]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 25]}`
+      betType = `${RouletteOperations.sixNumberBet}_${item}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 1]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 12]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 13]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 24]}_${ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY[index - 25]}`
     }
-    const returnObj = { betId, betType }
-    return returnObj
+    return betType
   }
 
   const handleHover = ({ index, hoverType }) => {
@@ -228,14 +202,13 @@ export const useRouletteController = () => {
   return {
     RState,
     isBetActive,
-    OperationType,
+    RouletteOperations,
     hoverTypesAndStatus,
     ROULETTE_GAME_DATA,
     handleBet,
     handleSelectedBetCoin,
     handleUndo,
     handleDouble,
-    displayBetAmount,
     formatTwoNumberBetOn,
     formatBottomBet,
     checkThreeOrFourBetPlaced,

@@ -1,30 +1,8 @@
 import { cloneDeep } from 'lodash'
 import { useEffect, useReducer, useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 export const useSicBoController = () => {
-  const OperationType = {
-    ODD: 'ODD',
-    EVEN: 'EVEN',
-    BIG: 'BIG',
-    SMALL: 'SMALL',
-    DOUBLE_ONE: 'bet_1_1',
-    DOUBLE_TWO: 'bet_2_2',
-    DOUBLE_THREE: 'bet_3_3',
-    DOUBLE_FOUR: 'bet_4_4',
-    DOUBLE_FIVE: 'bet_5_5',
-    DOUBLE_SIX: 'bet_6_6',
-    TRIPLE_ONE: 'bet_1_1_1',
-    TRIPLE_TWO: 'bet_2_2_2',
-    TRIPLE_THREE: 'bet_3_3_3',
-    TRIPLE_FOUR: 'bet_4_4_4',
-    TRIPLE_FIVE: 'bet_5_5_5',
-    TRIPLE_SIX: 'bet_6_6_6',
-    TRIPLE_ANY: 'bet_any_triple',
-    THREE_DICE_SUM: 'bet_three_dice_sum',
-    DOUBLE_DICE_COMBINATION: 'bet_double_dice_combination',
-    SINGLE_DICE: 'bet_single_dice'
-  }
-
   const DOUBLE_DICE_COMBINATION = []
   for (let i = 1; i <= 6; i++) {
     for (let j = i + 1; j <= 6; j++) {
@@ -80,7 +58,7 @@ export const useSicBoController = () => {
     }, [isBetActive]
   )
 
-  const handleBet = (item) => {
+  const handleBet = ({ betType }) => {
     if (!SBState.selectedBetCoin) {
       alert('Please select betting amount')
       return
@@ -90,7 +68,8 @@ export const useSicBoController = () => {
       return
     }
     const betObject = {
-      ...item,
+      betId: uuidv4(),
+      betType,
       betAmount: SBState.selectedBetCoin
     }
     setState({
@@ -119,26 +98,13 @@ export const useSicBoController = () => {
     })
   }
 
-  const displayBetAmount = (betType) => {
-    let sum = 0
-    SBState.currentGameStates.forEach((item) => {
-      if (item.betType === betType) {
-        sum = sum + item.betAmount
-      }
-    })
-    if (sum !== 0) return sum.toFixed(1).replace(/[.,]0$/, '')
-    return ''
-  }
-
   return {
     SBState,
     isBetActive,
-    OperationType,
     SICBO_GAME_DATA,
     handleBet,
     handleSelectedBetCoin,
     handleUndo,
-    handleDouble,
-    displayBetAmount
+    handleDouble
   }
 }

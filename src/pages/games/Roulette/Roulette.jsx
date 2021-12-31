@@ -1,28 +1,28 @@
 import { Grid } from '@mui/material'
-import { RouletteBlock } from '../../../components/RouletteBlock'
 import { BetCoin, BettingAmountOptions, GameContainer, InfoContainer, OptionsContainer, PentagonBlock, PlacedBetCoin, Root, ZeroInfoContainer, TimerDiv } from './Roulette.styles'
 import { useRouletteController } from './hooks/useRouletteController'
 import { CountDownTimer } from '../../../components/CountDownTimer'
-import { v4 as uuidv4 } from 'uuid'
 import { Notifier } from '../../../components/Notifier'
+import { displaySumOfBetAmount } from '../../../utils/common-functions'
+import { RouletteBlock } from './components/RouletteBlock'
 
 export const Roulette = () => {
   const {
     RState,
     isBetActive,
-    OperationType,
+    RouletteOperations,
     hoverTypesAndStatus,
     ROULETTE_GAME_DATA,
     handleBet,
     handleSelectedBetCoin,
     handleUndo,
     handleDouble,
-    displayBetAmount,
     formatTwoNumberBetOn,
     formatBottomBet,
     checkThreeOrFourBetPlaced,
     handleHover
   } = useRouletteController()
+  const array = RState.currentGameStates
 
   return (
     <Root>
@@ -32,13 +32,15 @@ export const Roulette = () => {
             <PentagonBlock
               hover={!!RState.hoverIndexArray.includes(-1)}
               onClick={() => handleBet({
-                betId: uuidv4(),
-                betType: `${OperationType.singleNumberBet}_0`
+                betType: `${RouletteOperations.singleNumberBet}_0`
               })}
             >
               <div style={{ display: 'block', transform: 'rotate(180deg)' }}>
                 <ZeroInfoContainer>0</ZeroInfoContainer>
-                {displayBetAmount(`${OperationType.singleNumberBet}_0`) && <PlacedBetCoin>{displayBetAmount(`${OperationType.singleNumberBet}_0`)}</PlacedBetCoin>}
+                {
+                  displaySumOfBetAmount({ betType: `${RouletteOperations.singleNumberBet}_0`, array }) &&
+                    <PlacedBetCoin>{displaySumOfBetAmount({ betType: `${RouletteOperations.singleNumberBet}_0`, array })}</PlacedBetCoin>
+                }
               </div>
             </PentagonBlock>
           </Grid>
@@ -52,28 +54,36 @@ export const Roulette = () => {
                         contentValue={item}
                         blockColor={ROULETTE_GAME_DATA.RED_COLOR_BLOCK_ARRAY.includes(item) ? 'red' : 'black'}
                         singleBetPlaceFunction={() => handleBet({
-                          betId: uuidv4(),
-                          betType: `${OperationType.singleNumberBet}_${item}`
+                          betType: `${RouletteOperations.singleNumberBet}_${item}`
                         })}
-                        placeBetCoin={displayBetAmount(`${OperationType.singleNumberBet}_${item}`) && <PlacedBetCoin>{displayBetAmount(`${OperationType.singleNumberBet}_${item}`)}</PlacedBetCoin>}
+                        placeBetCoin={
+                          displaySumOfBetAmount({ betType: `${RouletteOperations.singleNumberBet}_${item}`, array }) &&
+                            <PlacedBetCoin>{displaySumOfBetAmount({ betType: `${RouletteOperations.singleNumberBet}_${item}`, array })}</PlacedBetCoin>
+                        }
                         leftSideHandler={() => {
                           handleBet({
-                            betId: uuidv4(),
-                            betType: `${OperationType.twoNumberBet}_${formatTwoNumberBetOn({ item, index })}`
+                            betType: `${RouletteOperations.twoNumberBet}_${formatTwoNumberBetOn({ item, index })}`
                           })
                         }}
-                        twoNumberBetPlaced={displayBetAmount(`${OperationType.twoNumberBet}_${formatTwoNumberBetOn({ item, index })}`) && displayBetAmount(`${OperationType.twoNumberBet}_${formatTwoNumberBetOn({ item, index })}`)}
+                        twoNumberBetPlaced={
+                          displaySumOfBetAmount({ betType: `${RouletteOperations.twoNumberBet}_${formatTwoNumberBetOn({ item, index })}`, array }) &&
+                          displaySumOfBetAmount({ betType: `${RouletteOperations.twoNumberBet}_${formatTwoNumberBetOn({ item, index })}`, array })
+                        }
                         handleCorner={() => {
-                          handleBet(checkThreeOrFourBetPlaced({ item, index }))
+                          handleBet({ betType: checkThreeOrFourBetPlaced({ item, index }) })
                         }}
-                        threeOrFourBetPlaced={displayBetAmount(checkThreeOrFourBetPlaced({ item, index }).betType) && displayBetAmount(checkThreeOrFourBetPlaced({ item, index }).betType)}
+                        threeOrFourBetPlaced={
+                          displaySumOfBetAmount({ betType: checkThreeOrFourBetPlaced({ item, index }), array }) &&
+                          displaySumOfBetAmount({ betType: checkThreeOrFourBetPlaced({ item, index }), array })
+                        }
                         handleBottom={
                           () => {
-                            handleBet(formatBottomBet({ item, index }))
+                            handleBet({ betType: formatBottomBet({ item, index }) })
                           }
                         }
                         twoOrThreeBetPlaced={
-                          displayBetAmount(formatBottomBet({ item, index }).betType) && displayBetAmount(formatBottomBet({ item, index }).betType)
+                          displaySumOfBetAmount({ betType: formatBottomBet({ item, index }), array }) &&
+                          displaySumOfBetAmount({ betType: formatBottomBet({ item, index }), array })
                         }
                         handleSideHover={() => handleHover({ index, hoverType: hoverTypesAndStatus.sideHover })}
                         handleHoverOut={() => handleHover({ index, hoverType: '' })}
@@ -89,11 +99,13 @@ export const Roulette = () => {
                 ROULETTE_GAME_DATA.BLOCK_12_ROW.map(item => (
                   <Grid item xs={4} key={item.block}>
                     <InfoContainer onClick={() => handleBet({
-                      betId: uuidv4(),
-                      betType: `${OperationType.twelveNumberBet}_${item.block}`
+                      betType: `${RouletteOperations.twelveNumberBet}_${item.block}`
                     })}
                     >{item.label}
-                      {displayBetAmount(`${OperationType.twelveNumberBet}_${item.block}`) && <PlacedBetCoin>{displayBetAmount(`${OperationType.twelveNumberBet}_${item.block}`)}</PlacedBetCoin>}
+                      {displaySumOfBetAmount({ betType: `${RouletteOperations.twelveNumberBet}_${item.block}`, array }) &&
+                        <PlacedBetCoin>
+                          {displaySumOfBetAmount({ betType: `${RouletteOperations.twelveNumberBet}_${item.block}`, array })}
+                        </PlacedBetCoin>}
                     </InfoContainer>
                   </Grid>
                 ))
@@ -102,11 +114,13 @@ export const Roulette = () => {
                 ROULETTE_GAME_DATA.LAST_BET_ROW.map(item => (
                   <Grid item xs={2} key={item.label} style={{ marginTop: '1px' }}>
                     <InfoContainer onClick={() => handleBet({
-                      betId: uuidv4(),
                       betType: `${item.type}_${item.label}`
                     })}
                     >{item.label}
-                      {displayBetAmount(`${item.type}_${item.label}`) && <PlacedBetCoin>{displayBetAmount(`${item.type}_${item.label}`)}</PlacedBetCoin>}
+                      {displaySumOfBetAmount({ betType: `${item.type}_${item.label}`, array }) &&
+                        <PlacedBetCoin>
+                          {displaySumOfBetAmount({ betType: `${item.type}_${item.label}`, array })}
+                        </PlacedBetCoin>}
                     </InfoContainer>
                   </Grid>
                 ))
@@ -120,11 +134,13 @@ export const Roulette = () => {
                   <Grid item key={item.label} xs={12} style={{ marginBottom: '5px' }}>
                     <InfoContainer
                       height='60px' onClick={() => handleBet({
-                        betId: uuidv4(),
-                        betType: `${OperationType.rowViseBet}_${item.label}`
+                        betType: `${RouletteOperations.rowViseBet}_${item.label}`
                       })}
                     >{item.value}
-                      {displayBetAmount(`${OperationType.rowViseBet}_${item.label}`) && <PlacedBetCoin>{displayBetAmount(`${OperationType.rowViseBet}_${item.label}`)}</PlacedBetCoin>}
+                      {
+                        displaySumOfBetAmount({ betType: `${RouletteOperations.rowViseBet}_${item.label}`, array }) &&
+                          <PlacedBetCoin>{displaySumOfBetAmount({ betType: `${RouletteOperations.rowViseBet}_${item.label}`, array })}</PlacedBetCoin>
+                      }
                     </InfoContainer>
                   </Grid>
                 ))

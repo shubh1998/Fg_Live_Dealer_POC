@@ -4,22 +4,21 @@ import { ShowBetDetail } from '../../../components/ShowBetDetail'
 import { CountDownTimer } from '../../../components/CountDownTimer'
 import { Notifier } from '../../../components/Notifier'
 import { BetCoin, BettingAmountOptions, GameContainer, Item, OptionsContainer, Root, TimerDiv } from './Sicbo.Styles'
-
-import { v4 as uuidv4 } from 'uuid'
 import { useSicBoController } from './hooks/useSicBoController'
+import SicboOperations from '../../../utils/game-operations/Sicbo.JS'
+import { displaySumOfBetAmount } from '../../../utils/common-functions'
 
 export const SicBo = () => {
   const {
     SBState,
     isBetActive,
-    OperationType,
     SICBO_GAME_DATA,
     handleBet,
     handleSelectedBetCoin,
     handleUndo,
-    handleDouble,
-    displayBetAmount
+    handleDouble
   } = useSicBoController()
+  const array = SBState.currentGameStates
 
   return (
     <Root>
@@ -30,26 +29,26 @@ export const SicBo = () => {
               <Grid container spacing={1}>
                 <Grid item xs={8}>
                   <Item onClick={() => handleBet({
-                    betId: uuidv4(),
-                    betType: OperationType.SMALL
+                    betType: SicboOperations.SMALL
                   })}
                   >
                     <ShowBetDetail
                       title='Small(4-10)'
-                      betValue={displayBetAmount(OperationType.SMALL)}
+                      betValue={displaySumOfBetAmount({ betType: SicboOperations.SMALL, array })}
                     />
                   </Item>
                 </Grid>
                 <Grid item xs={4}>
                   <Item
                     onClick={() => handleBet({
-                      betId: uuidv4(),
-                      betType: OperationType.ODD
+                      betType: SicboOperations.ODD
                     })}
                   >
                     <ShowBetDetail
                       title='ODD'
-                      betValue={displayBetAmount(OperationType.ODD)}
+                      betValue={
+                        displaySumOfBetAmount({ betType: SicboOperations.ODD, array })
+                      }
                     />
                   </Item>
                 </Grid>
@@ -61,37 +60,40 @@ export const SicBo = () => {
                   <Grid container spacing={1}>
                     <Grid item xs={4}>
                       <Item onClick={() => handleBet({
-                        betId: uuidv4(),
-                        betType: OperationType.DOUBLE_ONE
+                        betType: SicboOperations.DOUBLE_ONE
                       })}
                       >
                         <ShowBetDetail
                           title='Double 1'
-                          betValue={displayBetAmount(OperationType.DOUBLE_ONE)}
+                          betValue={
+                            displaySumOfBetAmount({ betType: SicboOperations.DOUBLE_ONE, array })
+                          }
                         />
                       </Item>
                     </Grid>
                     <Grid item xs={4}>
                       <Item onClick={() => handleBet({
-                        betId: uuidv4(),
-                        betType: OperationType.DOUBLE_TWO
+                        betType: SicboOperations.DOUBLE_TWO
                       })}
                       >
                         <ShowBetDetail
                           title='Double 2'
-                          betValue={displayBetAmount(OperationType.DOUBLE_TWO)}
+                          betValue={
+                            displaySumOfBetAmount({ betType: SicboOperations.DOUBLE_TWO, array })
+                          }
                         />
                       </Item>
                     </Grid>
                     <Grid item xs={4}>
                       <Item onClick={() => handleBet({
-                        betId: uuidv4(),
-                        betType: OperationType.DOUBLE_THREE
+                        betType: SicboOperations.DOUBLE_THREE
                       })}
                       >
                         <ShowBetDetail
                           title='Double 3'
-                          betValue={displayBetAmount(OperationType.DOUBLE_THREE)}
+                          betValue={
+                            displaySumOfBetAmount({ betType: SicboOperations.DOUBLE_THREE, array })
+                          }
                         />
                       </Item>
                     </Grid>
@@ -105,13 +107,14 @@ export const SicBo = () => {
                           <Item
                             height='47px'
                             onClick={() => handleBet({
-                              betId: uuidv4(),
-                              betType: OperationType.TRIPLE_ONE
+                              betType: SicboOperations.TRIPLE_ONE
                             })}
                           >
                             <ShowBetDetail
                               title='Triple 1'
-                              betValue={displayBetAmount(OperationType.TRIPLE_ONE)}
+                              betValue={
+                                displaySumOfBetAmount({ betType: SicboOperations.TRIPLE_ONE, array })
+                              }
                             />
                           </Item>
                         </Grid>
@@ -119,13 +122,14 @@ export const SicBo = () => {
                           <Item
                             height='47px'
                             onClick={() => handleBet({
-                              betId: uuidv4(),
-                              betType: OperationType.TRIPLE_TWO
+                              betType: SicboOperations.TRIPLE_TWO
                             })}
                           >
                             <ShowBetDetail
                               title='Triple 2'
-                              betValue={displayBetAmount(OperationType.TRIPLE_TWO)}
+                              betValue={
+                                displaySumOfBetAmount({ betType: SicboOperations.TRIPLE_TWO, array })
+                              }
                             />
                           </Item>
                         </Grid>
@@ -133,13 +137,14 @@ export const SicBo = () => {
                           <Item
                             height='47px'
                             onClick={() => handleBet({
-                              betId: uuidv4(),
-                              betType: OperationType.TRIPLE_THREE
+                              betType: SicboOperations.TRIPLE_THREE
                             })}
                           >
                             <ShowBetDetail
                               title='Triple 3'
-                              betValue={displayBetAmount(OperationType.TRIPLE_THREE)}
+                              betValue={
+                                displaySumOfBetAmount({ betType: SicboOperations.TRIPLE_THREE, array })
+                              }
                             />
                           </Item>
                         </Grid>
@@ -150,13 +155,14 @@ export const SicBo = () => {
                         <Grid item xs={12}>
                           <Item
                             onClick={() => handleBet({
-                              betId: uuidv4(),
-                              betType: OperationType.TRIPLE_ANY
+                              betType: SicboOperations.TRIPLE_ANY
                             })}
                           >
                             <ShowBetDetail
                               title='Any Triple'
-                              betValue={displayBetAmount(OperationType.TRIPLE_ANY)}
+                              betValue={
+                                displaySumOfBetAmount({ betType: SicboOperations.TRIPLE_ANY, array })
+                              }
                             />
                           </Item>
                         </Grid>
@@ -168,13 +174,14 @@ export const SicBo = () => {
                           <Item
                             height='47px'
                             onClick={() => handleBet({
-                              betId: uuidv4(),
-                              betType: OperationType.TRIPLE_FOUR
+                              betType: SicboOperations.TRIPLE_FOUR
                             })}
                           >
                             <ShowBetDetail
                               title='Triple 4'
-                              betValue={displayBetAmount(OperationType.TRIPLE_FOUR)}
+                              betValue={
+                                displaySumOfBetAmount({ betType: SicboOperations.TRIPLE_FOUR, array })
+                              }
                             />
                           </Item>
                         </Grid>
@@ -182,13 +189,14 @@ export const SicBo = () => {
                           <Item
                             height='47px'
                             onClick={() => handleBet({
-                              betId: uuidv4(),
-                              betType: OperationType.TRIPLE_FIVE
+                              betType: SicboOperations.TRIPLE_FIVE
                             })}
                           >
                             <ShowBetDetail
                               title='Triple 5'
-                              betValue={displayBetAmount(OperationType.TRIPLE_FIVE)}
+                              betValue={
+                                displaySumOfBetAmount({ betType: SicboOperations.TRIPLE_FIVE, array })
+                              }
                             />
                           </Item>
                         </Grid>
@@ -196,13 +204,14 @@ export const SicBo = () => {
                           <Item
                             height='47px'
                             onClick={() => handleBet({
-                              betId: uuidv4(),
-                              betType: OperationType.TRIPLE_SIX
+                              betType: SicboOperations.TRIPLE_SIX
                             })}
                           >
                             <ShowBetDetail
                               title='Triple 6'
-                              betValue={displayBetAmount(OperationType.TRIPLE_SIX)}
+                              betValue={
+                                displaySumOfBetAmount({ betType: SicboOperations.TRIPLE_SIX, array })
+                              }
                             />
                           </Item>
                         </Grid>
@@ -214,37 +223,40 @@ export const SicBo = () => {
                   <Grid container spacing={1}>
                     <Grid item xs={4}>
                       <Item onClick={() => handleBet({
-                        betId: uuidv4(),
-                        betType: OperationType.DOUBLE_FOUR
+                        betType: SicboOperations.DOUBLE_FOUR
                       })}
                       >
                         <ShowBetDetail
                           title='Double 4'
-                          betValue={displayBetAmount(OperationType.DOUBLE_FOUR)}
+                          betValue={
+                            displaySumOfBetAmount({ betType: SicboOperations.DOUBLE_FOUR, array })
+                          }
                         />
                       </Item>
                     </Grid>
                     <Grid item xs={4}>
                       <Item onClick={() => handleBet({
-                        betId: uuidv4(),
-                        betType: OperationType.DOUBLE_FIVE
+                        betType: SicboOperations.DOUBLE_FIVE
                       })}
                       >
                         <ShowBetDetail
                           title='Double 5'
-                          betValue={displayBetAmount(OperationType.DOUBLE_FIVE)}
+                          betValue={
+                            displaySumOfBetAmount({ betType: SicboOperations.DOUBLE_FIVE, array })
+                          }
                         />
                       </Item>
                     </Grid>
                     <Grid item xs={4}>
                       <Item onClick={() => handleBet({
-                        betId: uuidv4(),
-                        betType: OperationType.DOUBLE_SIX
+                        betType: SicboOperations.DOUBLE_SIX
                       })}
                       >
                         <ShowBetDetail
                           title='Double 6'
-                          betValue={displayBetAmount(OperationType.DOUBLE_SIX)}
+                          betValue={
+                            displaySumOfBetAmount({ betType: SicboOperations.DOUBLE_SIX, array })
+                          }
                         />
                       </Item>
                     </Grid>
@@ -259,25 +271,27 @@ export const SicBo = () => {
               <Grid container spacing={1}>
                 <Grid item xs={4}>
                   <Item onClick={() => handleBet({
-                    betId: uuidv4(),
-                    betType: OperationType.EVEN
+                    betType: SicboOperations.EVEN
                   })}
                   >
                     <ShowBetDetail
                       title='EVEN'
-                      betValue={displayBetAmount(OperationType.EVEN)}
+                      betValue={
+                        displaySumOfBetAmount({ betType: SicboOperations.EVEN, array })
+                      }
                     />
                   </Item>
                 </Grid>
                 <Grid item xs={8}>
                   <Item onClick={() => handleBet({
-                    betId: uuidv4(),
-                    betType: OperationType.BIG
+                    betType: SicboOperations.BIG
                   })}
                   >
                     <ShowBetDetail
                       title='BIG(11-17)'
-                      betValue={displayBetAmount(OperationType.BIG)}
+                      betValue={
+                        displaySumOfBetAmount({ betType: SicboOperations.BIG, array })
+                      }
                     />
                   </Item>
                 </Grid>
@@ -290,14 +304,15 @@ export const SicBo = () => {
                 (item) =>
                   <Item
                     onClick={() => handleBet({
-                      betId: uuidv4(),
-                      betType: `${OperationType.THREE_DICE_SUM}_${item}`
+                      betType: `${SicboOperations.THREE_DICE_SUM}_${item}`
                     })}
                     key={item} height={80} margin={2}
                   >
                     <ShowBetDetail
                       title={item}
-                      betValue={displayBetAmount(`${OperationType.THREE_DICE_SUM}_${item}`)}
+                      betValue={
+                        displaySumOfBetAmount({ betType: `${SicboOperations.THREE_DICE_SUM}_${item}`, array })
+                      }
                     />
                   </Item>
               )
@@ -309,14 +324,15 @@ export const SicBo = () => {
                 ({ i, j }) =>
                   <Item
                     onClick={() => handleBet({
-                      betId: uuidv4(),
-                      betType: `${OperationType.DOUBLE_DICE_COMBINATION}_${i}_${j}`
+                      betType: `${SicboOperations.DOUBLE_DICE_COMBINATION}_${i}_${j}`
                     })}
                     key={`${i}_${j}`} height={140} margin={2}
                   >
                     <ShowBetDetail
                       title={`${i}+ ${j}`}
-                      betValue={displayBetAmount(`${OperationType.DOUBLE_DICE_COMBINATION}_${i}_${j}`)}
+                      betValue={
+                        displaySumOfBetAmount({ betType: `${SicboOperations.DOUBLE_DICE_COMBINATION}_${i}_${j}`, array })
+                      }
                     />
                   </Item>
               )
@@ -328,14 +344,15 @@ export const SicBo = () => {
                 (item) =>
                   <Item
                     onClick={() => handleBet({
-                      betId: uuidv4(),
-                      betType: `${OperationType.SINGLE_DICE}_${item}`
+                      betType: `${SicboOperations.SINGLE_DICE}_${item}`
                     })}
                     key={item} height={100} margin={4}
                   >
                     <ShowBetDetail
                       title={item}
-                      betValue={displayBetAmount(`${OperationType.SINGLE_DICE}_${item}`)}
+                      betValue={
+                        displaySumOfBetAmount({ betType: `${SicboOperations.SINGLE_DICE}_${item}`, array })
+                      }
                     />
                   </Item>
               )
