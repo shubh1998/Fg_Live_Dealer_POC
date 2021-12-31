@@ -124,6 +124,7 @@ export const useRouletteController = () => {
         sum = sum + item.betAmount
       }
     })
+    if (sum !== 0) return sum.toFixed(1).replace(/[.,]0$/, '')
     return sum
   }
 
