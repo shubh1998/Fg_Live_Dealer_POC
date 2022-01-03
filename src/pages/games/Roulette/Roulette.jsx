@@ -10,6 +10,7 @@ export const Roulette = () => {
   const {
     RState,
     isBetActive,
+    timer,
     RouletteOperations,
     hoverTypesAndStatus,
     ROULETTE_GAME_DATA,
@@ -174,7 +175,7 @@ export const Roulette = () => {
       {
         isBetActive && (
           <TimerDiv>
-            <CountDownTimer countDownTime={10} />
+            <CountDownTimer countDownTime={timer} />
           </TimerDiv>
         )
       }

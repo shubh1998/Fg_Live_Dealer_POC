@@ -84,6 +84,13 @@ export const useRouletteController = () => {
   }), initialState)
 
   const [isBetActive, setIsBetActive] = useState(true)
+  const [timer, setTimer] = useState(10)
+
+  useEffect(() => {
+    setInterval(() => {
+      setTimer((prev) => prev - 1)
+    }, 1000)
+  }, [])
 
   // FIXME: remove with backend socket logic
   useEffect(() => {
@@ -100,6 +107,7 @@ export const useRouletteController = () => {
           previousGameStates: [],
           currentGameStates: []
         })
+        setTimer(10)
       }
     }, [isBetActive]
   )
@@ -202,6 +210,7 @@ export const useRouletteController = () => {
   return {
     RState,
     isBetActive,
+    timer,
     RouletteOperations,
     hoverTypesAndStatus,
     ROULETTE_GAME_DATA,

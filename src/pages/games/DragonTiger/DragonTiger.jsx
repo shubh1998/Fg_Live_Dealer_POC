@@ -1,6 +1,16 @@
 import { CountDownTimer } from '../../../components/CountDownTimer'
 import { Notifier } from '../../../components/Notifier'
-import { BetCoin, BetSideTitle, BettingAmountOptions, FlexContainer, GameContainer, GameIcon, HalfContainer, Root, TimerDiv } from './DragonTiger.styles'
+import {
+  BetCoin,
+  BetSideTitle,
+  BettingAmountOptions,
+  FlexContainer,
+  GameContainer,
+  GameIcon,
+  HalfContainer,
+  Root,
+  TimerDiv
+} from './DragonTiger.styles'
 import { useDragonTigerController } from './hooks/useDragonTigerController'
 import { displaySumOfBetAmount } from '../../../utils/common-functions'
 
@@ -8,6 +18,7 @@ export const DragonTiger = () => {
   const {
     DTState,
     isBetActive,
+    timer,
     DragonTigerOperation,
     DRAGON_TIGER_GAME_DATA,
     handleBet,
@@ -22,41 +33,61 @@ export const DragonTiger = () => {
       <GameContainer>
         <Notifier isBetActive={isBetActive} />
         <FlexContainer className='betting-option'>
-          <HalfContainer onClick={() => handleBet({
-            betType: DragonTigerOperation.DRAGON
-          })}
+          <HalfContainer
+            onClick={() =>
+              handleBet({
+                betType: DragonTigerOperation.DRAGON
+              })}
           >
             <GameIcon src='game-icon/dragon.svg' alt='dragon_icon' />
-            {displaySumOfBetAmount({ betType: DragonTigerOperation.DRAGON, array })}
+            {displaySumOfBetAmount({
+              betType: DragonTigerOperation.DRAGON,
+              array
+            })}
             <span>1:1</span>
             <BetSideTitle>Dragon</BetSideTitle>
           </HalfContainer>
 
           <HalfContainer>
-            <div onClick={() => handleBet({
-              betType: DragonTigerOperation.TIE
-            })}
+            <div
+              onClick={() =>
+                handleBet({
+                  betType: DragonTigerOperation.TIE
+                })}
             >
-              {displaySumOfBetAmount({ betType: DragonTigerOperation.TIE, array })}
+              {displaySumOfBetAmount({
+                betType: DragonTigerOperation.TIE,
+                array
+              })}
               <p>11:1</p>
               <BetSideTitle>Tie</BetSideTitle>
             </div>
-            <div onClick={() => handleBet({
-              betType: DragonTigerOperation.SUITED_TIE
-            })}
+            <div
+              onClick={() =>
+                handleBet({
+                  betType: DragonTigerOperation.SUITED_TIE
+                })}
             >
-              {displaySumOfBetAmount({ betType: DragonTigerOperation.SUITED_TIE, array })}
+              {displaySumOfBetAmount({
+                betType: DragonTigerOperation.SUITED_TIE,
+                array
+              })}
               <p>50:1</p>
               <BetSideTitle>Suited Tie</BetSideTitle>
             </div>
           </HalfContainer>
 
-          <HalfContainer onClick={() => handleBet({
-            betType: DragonTigerOperation.TIGER
-          })}
+          <HalfContainer
+            onClick={() =>
+              handleBet({
+                betType: DragonTigerOperation.TIGER
+              })}
           >
             <GameIcon src='game-icon/tiger.svg' alt='tiger_icon' />
-            {displaySumOfBetAmount({ betType: DragonTigerOperation.TIGER, array })}
+            {displaySumOfBetAmount({
+              betType: DragonTigerOperation.TIGER,
+              array
+            })}
             <span>1:1</span>
             <BetSideTitle>Tiger</BetSideTitle>
           </HalfContainer>
@@ -86,9 +117,9 @@ export const DragonTiger = () => {
             Double
           </button>
         </BettingAmountOptions>
-        {isBetActive && (
+        {timer > 0 && (
           <TimerDiv>
-            <CountDownTimer countDownTime={10} />
+            <CountDownTimer countDownTime={timer} />
           </TimerDiv>
         )}
       </GameContainer>

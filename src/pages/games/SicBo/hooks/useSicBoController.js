@@ -38,6 +38,13 @@ export const useSicBoController = () => {
   }), initialState)
 
   const [isBetActive, setIsBetActive] = useState(true)
+  const [timer, setTimer] = useState(10)
+
+  useEffect(() => {
+    setInterval(() => {
+      setTimer((prev) => prev - 1)
+    }, 1000)
+  }, [])
 
   // FIXME: remove with backend socket logic
   useEffect(() => {
@@ -54,6 +61,7 @@ export const useSicBoController = () => {
           previousGameStates: [],
           currentGameStates: []
         })
+        setTimer(10)
       }
     }, [isBetActive]
   )
@@ -101,6 +109,7 @@ export const useSicBoController = () => {
   return {
     SBState,
     isBetActive,
+    timer,
     SICBO_GAME_DATA,
     handleBet,
     handleSelectedBetCoin,

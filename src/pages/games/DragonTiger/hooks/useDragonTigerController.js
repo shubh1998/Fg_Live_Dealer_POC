@@ -21,6 +21,14 @@ export const useDragonTigerController = () => {
 
   const [isBetActive, setIsBetActive] = useState(true)
 
+  const [timer, setTimer] = useState(10)
+
+  useEffect(() => {
+    setInterval(() => {
+      setTimer((prev) => prev - 1)
+    }, 1000)
+  }, [])
+
   // FIXME: remove with backend socket logic
   useEffect(() => {
     setInterval(() => {
@@ -36,6 +44,7 @@ export const useDragonTigerController = () => {
           previousGameStates: [],
           currentGameStates: []
         })
+        setTimer(10)
       }
     }, [isBetActive]
   )
@@ -82,6 +91,7 @@ export const useDragonTigerController = () => {
   return {
     DTState,
     isBetActive,
+    timer,
     DragonTigerOperation,
     DRAGON_TIGER_GAME_DATA,
     handleBet,
