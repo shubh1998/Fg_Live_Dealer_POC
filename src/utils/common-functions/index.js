@@ -1,12 +1,14 @@
+import np from 'number-precision'
+
 const displaySumOfBetAmount = ({ betType, array }) => {
   if (array.length) {
     let sum = 0
     array.forEach((item) => {
       if (item.betType === betType) {
-        sum = sum + item.betAmount
+        sum = np.plus(sum, item.betAmount)
       }
     })
-    if (sum !== 0) return sum.toFixed(1).replace(/[.,]0$/, '')
+    if (sum !== 0) return sum
   }
   return ''
 }
