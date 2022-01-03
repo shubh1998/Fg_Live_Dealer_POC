@@ -11,3 +11,7 @@ export const logoutRequest = () => {
 export const registerRequest = (data) => {
   return apiClient.postRequest('/company/register', data)
 }
+
+export const placeBetApi = (data) => {
+  return apiClient.postRequest('/demo/place-bet', data)
+}

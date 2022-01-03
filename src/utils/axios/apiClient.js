@@ -24,7 +24,7 @@ class ApiClient {
 
 // Create axios Instance
 const axiosInst = axios.create({
-  baseURL: 'http://localhost:8000/api/v1'
+  baseURL: 'https://demo-be-fg.herokuapp.com/api/v1'
 })
 
 // Adding axios request interceptor
