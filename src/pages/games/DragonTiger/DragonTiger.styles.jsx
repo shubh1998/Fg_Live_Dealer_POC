@@ -38,17 +38,3 @@ export const HalfContainer = styled.div({
   margin: '50px auto',
   border: '2px solid black'
 })
-
-export const BettingAmountOptions = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  width: 400,
-  margin: 'auto'
-})
-
-export const BetCoin = styled.button(({ selectedButton }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  border: selectedButton ? '2px solid black' : 'none'
-}))

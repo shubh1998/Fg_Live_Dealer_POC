@@ -56,7 +56,13 @@ export const useDragonTigerController = () => {
       // {timer: 25}
       setCounter(res.timer)
       if (!res.timer && DTState.currentGameStates.length) {
-        handlePlaceBetApi()
+        const request = {
+          userId: 1,
+          gameId: GAME_ID,
+          roundId: roundId,
+          placedBet: DTState.currentGameStates
+        }
+        handlePlaceBetApi(request)
       }
     })
   }, [socket])
@@ -93,14 +99,6 @@ export const useDragonTigerController = () => {
       betAmount: DTState.selectedBetCoin
     }
 
-    const placeBetRequestPayload = [...DTState.currentGameStates, betObject]
-    const request = {
-      userId: 1,
-      gameId: GAME_ID,
-      roundId: roundId,
-      placedBet: placeBetRequestPayload
-    }
-    handlePlaceBetApi(request)
     setState({
       previousGameStates: [...DTState.previousGameStates, DTState.currentGameStates],
       currentGameStates: [...DTState.currentGameStates, betObject]

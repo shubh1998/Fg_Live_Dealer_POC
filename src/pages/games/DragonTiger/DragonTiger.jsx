@@ -1,9 +1,7 @@
 import { CountDownTimer } from '../../../components/CountDownTimer'
 import { Notifier } from '../../../components/Notifier'
 import {
-  BetCoin,
   BetSideTitle,
-  BettingAmountOptions,
   FlexContainer,
   GameContainer,
   GameIcon,
@@ -13,6 +11,7 @@ import {
 } from './DragonTiger.styles'
 import { useDragonTigerController } from './hooks/useDragonTigerController'
 import { displaySumOfBetAmount } from '../../../utils/common-functions'
+import { BetCoinSection } from '../../../components/BetCoinSection'
 
 export const DragonTiger = () => {
   const {
@@ -92,31 +91,17 @@ export const DragonTiger = () => {
             <BetSideTitle>Tiger</BetSideTitle>
           </HalfContainer>
         </FlexContainer>
-        <BettingAmountOptions className='casino-coin'>
-          <button
-            disabled={!isBetActive || DTState.previousGameStates.length === 0}
-            onClick={handleUndo}
-          >
-            Undo
-          </button>
 
-          {DRAGON_TIGER_GAME_DATA.casinoTokens.map((token, index) => (
-            <BetCoin
-              key={index}
-              disabled={!isBetActive}
-              selectedButton={DTState.selectedBetCoin === token}
-              onClick={() => handleSelectedBetCoin(token)}
-            >
-              {token}
-            </BetCoin>
-          ))}
-          <button
-            disabled={!isBetActive || DTState.currentGameStates.length === 0}
-            onClick={handleDouble}
-          >
-            Double
-          </button>
-        </BettingAmountOptions>
+        <BetCoinSection
+          casinoTokens={DRAGON_TIGER_GAME_DATA.casinoTokens}
+          handleUndo={handleUndo}
+          disableUndo={!isBetActive || DTState.previousGameStates.length === 0}
+          isBetActive={isBetActive}
+          handleSelectedBetCoin={handleSelectedBetCoin}
+          handleDouble={handleDouble}
+          disableDouble={!isBetActive || DTState.currentGameStates.length === 0}
+          selectedBetCoin={DTState.selectedBetCoin}
+        />
         {timer > 0 && (
           <TimerDiv>
             <CountDownTimer countDownTime={timer} />
