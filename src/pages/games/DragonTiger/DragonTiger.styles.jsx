@@ -7,7 +7,7 @@ export const Root = styled.div({
 })
 
 export const GameContainer = styled.div({
-  height: 500,
+  height: 'auto',
   width: 650,
   margin: 50,
   border: '4px solid black'
@@ -37,4 +37,11 @@ export const HalfContainer = styled.div({
   display: 'grid',
   margin: '50px auto',
   border: '2px solid black'
+})
+
+export const CardBox = styled.div({
+  height: 70,
+  width: 70,
+  border: '1px solid black',
+  margin: 'auto'
 })

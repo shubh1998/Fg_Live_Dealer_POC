@@ -43,4 +43,13 @@ axiosInst.interceptors.request.use(
   }
 )
 
+// Adding axios request interceptor
+axiosInst.interceptors.response.use(
+  (res) => res.data.data,
+  (error) => {
+    console.log(error)
+    Promise.reject(error)
+  }
+)
+
 export default new ApiClient(axiosInst)

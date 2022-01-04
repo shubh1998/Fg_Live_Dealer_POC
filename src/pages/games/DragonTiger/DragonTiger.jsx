@@ -2,6 +2,7 @@ import { CountDownTimer } from '../../../components/CountDownTimer'
 import { Notifier } from '../../../components/Notifier'
 import {
   BetSideTitle,
+  CardBox,
   FlexContainer,
   GameContainer,
   GameIcon,
@@ -12,102 +13,140 @@ import {
 import { useDragonTigerController } from './hooks/useDragonTigerController'
 import { displaySumOfBetAmount } from '../../../utils/common-functions'
 import { BetCoinSection } from '../../../components/BetCoinSection'
+import { ShowBetDetail } from '../../../components/ShowBetDetail'
 
 export const DragonTiger = () => {
   const {
     DTState,
-    isBetActive,
     timer,
     DragonTigerOperation,
-    DRAGON_TIGER_GAME_DATA,
     handleBet,
     handleSelectedBetCoin,
     handleUndo,
-    handleDouble
+    handleDouble,
+    handleRepeat
   } = useDragonTigerController()
   const array = DTState.currentGameStates
+  const { gameData, round, dragonCard, tigerCard, result, previousGameStates, currentGameStates, selectedBetCoin, lastBet } = DTState
 
   return (
-    <Root>
-      <GameContainer>
-        <Notifier isBetActive={isBetActive} />
-        <FlexContainer className='betting-option'>
-          <HalfContainer
-            onClick={() =>
-              handleBet({
-                betType: DragonTigerOperation.DRAGON
-              })}
-          >
-            <GameIcon src='game-icon/dragon.svg' alt='dragon_icon' />
-            {displaySumOfBetAmount({
-              betType: DragonTigerOperation.DRAGON,
-              array
-            })}
-            <span>1:1</span>
-            <BetSideTitle>Dragon</BetSideTitle>
-          </HalfContainer>
-
-          <HalfContainer>
-            <div
+    gameData &&
+    (
+      <Root>
+        <GameContainer>
+          <Notifier isBetActive={timer} />
+          <FlexContainer className='betting-option'>
+            <HalfContainer
               onClick={() =>
                 handleBet({
-                  betType: DragonTigerOperation.TIE
+                  betType: DragonTigerOperation.DRAGON.betType,
+                  betId: DragonTigerOperation.DRAGON.betId
                 })}
             >
-              {displaySumOfBetAmount({
-                betType: DragonTigerOperation.TIE,
-                array
-              })}
-              <p>11:1</p>
-              <BetSideTitle>Tie</BetSideTitle>
-            </div>
-            <div
+              <GameIcon src='game-icon/dragon.svg' alt='dragon_icon' />
+              {dragonCard && <CardBox> {dragonCard.suit + ' ' + dragonCard.cardValue}</CardBox>}
+              <ShowBetDetail
+                betValue={displaySumOfBetAmount({
+                  betType: DragonTigerOperation.DRAGON.betType,
+                  array
+                })}
+              />
+              <span>1:1</span>
+              <BetSideTitle>Dragon</BetSideTitle>
+            </HalfContainer>
+
+            <HalfContainer>
+              <div
+                onClick={() =>
+                  handleBet({
+                    betType: DragonTigerOperation.TIE.betType,
+                    betId: DragonTigerOperation.TIE.betId
+                  })}
+              >
+                <ShowBetDetail
+                  betValue={displaySumOfBetAmount({
+                    betType: DragonTigerOperation.TIE.betType,
+                    array
+                  })}
+                />
+                <p>11:1</p>
+                <BetSideTitle>Tie</BetSideTitle>
+              </div>
+              <div
+                onClick={() =>
+                  handleBet({
+                    betType: DragonTigerOperation.SUITED_TIE.betType,
+                    betId: DragonTigerOperation.SUITED_TIE.betId
+                  })}
+              >
+                <ShowBetDetail
+                  betValue={displaySumOfBetAmount({
+                    betType: DragonTigerOperation.SUITED_TIE.betType,
+                    array
+                  })}
+                />
+                <p>50:1</p>
+                <BetSideTitle>Suited Tie</BetSideTitle>
+              </div>
+            </HalfContainer>
+
+            <HalfContainer
               onClick={() =>
                 handleBet({
-                  betType: DragonTigerOperation.SUITED_TIE
+                  betType: DragonTigerOperation.TIGER.betType,
+                  betId: DragonTigerOperation.TIGER.betId
                 })}
             >
-              {displaySumOfBetAmount({
-                betType: DragonTigerOperation.SUITED_TIE,
-                array
-              })}
-              <p>50:1</p>
-              <BetSideTitle>Suited Tie</BetSideTitle>
-            </div>
-          </HalfContainer>
+              <GameIcon src='game-icon/tiger.svg' alt='tiger_icon' />
+              {tigerCard && <CardBox>{tigerCard.suit + ' ' + tigerCard.cardValue}</CardBox>}
+              <ShowBetDetail
+                betValue={displaySumOfBetAmount({
+                  betType: DragonTigerOperation.TIGER.betType,
+                  array
+                })}
+              />
+              <span>1:1</span>
+              <BetSideTitle>Tiger</BetSideTitle>
+            </HalfContainer>
+          </FlexContainer>
 
-          <HalfContainer
-            onClick={() =>
-              handleBet({
-                betType: DragonTigerOperation.TIGER
-              })}
-          >
-            <GameIcon src='game-icon/tiger.svg' alt='tiger_icon' />
-            {displaySumOfBetAmount({
-              betType: DragonTigerOperation.TIGER,
-              array
-            })}
-            <span>1:1</span>
-            <BetSideTitle>Tiger</BetSideTitle>
-          </HalfContainer>
-        </FlexContainer>
+          <BetCoinSection
+            casinoTokens={gameData.availableCoins}
+            handleUndo={handleUndo}
+            disableUndo={!timer || !previousGameStates.length}
+            isBetActive={timer}
+            handleSelectedBetCoin={handleSelectedBetCoin}
+            handleDouble={handleDouble}
+            disableDouble={!timer || !currentGameStates.length}
+            selectedBetCoin={selectedBetCoin}
+            handleRepeat={handleRepeat}
+            isShowRepeat={timer && !currentGameStates.length && lastBet.length}
+          />
+          {timer > 0 && (
+            <TimerDiv>
+              <CountDownTimer countDownTime={timer} />
+            </TimerDiv>
+          )}
+          {
+            result && round &&
+              <div style={{ textAlign: 'center', color: 'green', margin: 5, border: '1px solid black' }}>
+                <div>
+                  {`Winner - ${round.roundWinner}`}
+                </div>
+                {
+                  result.winningAmount
+                    ? (
+                      <div>
+                        {`Winning amount ${result.winningAmount}`}
+                      </div>
+                      )
+                    : <></>
+                }
 
-        <BetCoinSection
-          casinoTokens={DRAGON_TIGER_GAME_DATA.casinoTokens}
-          handleUndo={handleUndo}
-          disableUndo={!isBetActive || DTState.previousGameStates.length === 0}
-          isBetActive={isBetActive}
-          handleSelectedBetCoin={handleSelectedBetCoin}
-          handleDouble={handleDouble}
-          disableDouble={!isBetActive || DTState.currentGameStates.length === 0}
-          selectedBetCoin={DTState.selectedBetCoin}
-        />
-        {timer > 0 && (
-          <TimerDiv>
-            <CountDownTimer countDownTime={timer} />
-          </TimerDiv>
-        )}
-      </GameContainer>
-    </Root>
+              </div>
+          }
+        </GameContainer>
+      </Root>
+    )
   )
 }

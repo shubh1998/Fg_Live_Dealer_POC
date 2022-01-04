@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import React from 'react'
 
-export const BetCoinSection = ({ casinoTokens, handleUndo, isBetActive, handleSelectedBetCoin, handleDouble, disableUndo, disableDouble, selectedBetCoin }) => {
+export const BetCoinSection = ({ casinoTokens, handleUndo, isBetActive, handleSelectedBetCoin, handleDouble, disableUndo, disableDouble, selectedBetCoin, isShowRepeat, handleRepeat }) => {
   return (
     <OptionsContainer>
       <BettingAmountOptions className='casino-coin'>
@@ -19,8 +19,8 @@ export const BetCoinSection = ({ casinoTokens, handleUndo, isBetActive, handleSe
             {token}
           </BetCoin>
         ))}
-        <button onClick={handleDouble} disabled={disableDouble}>
-          Double
+        <button onClick={isShowRepeat ? handleRepeat : handleDouble} disabled={isShowRepeat ? false : disableDouble}>
+          {isShowRepeat ? 'Repeat' : 'Double'}
         </button>
       </BettingAmountOptions>
     </OptionsContainer>

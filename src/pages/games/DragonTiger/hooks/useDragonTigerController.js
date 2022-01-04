@@ -1,100 +1,130 @@
-import { cloneDeep } from 'lodash'
+import { chain, cloneDeep, sumBy } from 'lodash'
 import { useContext, useEffect, useReducer, useState } from 'react'
 import DragonTigerOperation from '../../../../utils/game-operations/DragonTiger'
-import { v4 as uuidv4 } from 'uuid'
 import { SocketContext } from '../../../../context/socket'
-import { placeBetApi } from '../../../../utils/services/user.service'
+import { gameResult, getPreGameDataApi, placeBetApi, stopRound } from '../../../../API/services/dragon-tiger.service'
+import { GAMEID } from '../../../../utils/game-ids'
+let IntervalTimer
+let count = 0
+const initialState = {
+  selectedBetCoin: null,
+  previousGameStates: [],
+  currentGameStates: [],
+  result: null,
+  gameData: {
+    gameId: null,
+    gameName: 'Dragon Tiger',
+    minimumBet: null,
+    availableCoins: [],
+    gameRules: []
+  },
+  round: {
+    newRoundId: null,
+    roundStatus: null,
+    roundWinner: null
+  },
+  dragonCard: null,
+  tigerCard: null,
+  lastBet: []
+}
 
 export const useDragonTigerController = () => {
   const socket = useContext(SocketContext)
-  const DRAGON_TIGER_GAME_DATA = {
-    casinoTokens: [0.2, 1, 5, 20, 100, 200]
-  }
-  const GAME_ID = 1
-  const [roundId, setRoundID] = useState(null)
-  const [counter, setCounter] = useState(0)
-
-  const initialState = {
-    selectedBetCoin: null,
-    previousGameStates: [],
-    currentGameStates: []
-  }
-
+  const [timer, setTimer] = useState(0)
   const [DTState, setState] = useReducer((state, newState) => ({
     ...state,
     ...newState
   }), initialState)
 
-  const [isBetActive, setIsBetActive] = useState(true)
-
-  const [timer, setTimer] = useState(10)
-
   useEffect(() => {
-    setInterval(() => {
-      setTimer((prev) => prev - 1)
-    }, 1000)
-  }, [])
-
-  // FIXME: remove with backend socket logic
-  useEffect(() => {
-    setInterval(() => {
-      setIsBetActive((prev) => !prev)
-    }, 10000)
-  }, [])
-
-  useEffect(() => {
-    socket.emit('join_game', GAME_ID) // 1 game id for dragon tiger
+    fetchGameData()
+    socket.emit('join_game', GAMEID.DRAGON_TIGER_ID) // 1 game id for dragon tiger
   }, [])
 
   useEffect(() => {
     socket.on('game_round_data', (res) => {
-      // Round id
-      console.log('res', res)
-      setRoundID(res.data.roundId)
+      if (res) {
+        setState({ round: res })
+      }
     })
     socket.on('timer', (res) => {
-      // {timer: 25}
-      setCounter(res.timer)
-      if (!res.timer && DTState.currentGameStates.length) {
-        const request = {
-          userId: 1,
-          gameId: GAME_ID,
-          roundId: roundId,
-          placedBet: DTState.currentGameStates
-        }
-        handlePlaceBetApi(request)
+      if (count === 0) {
+        setTimer(res.timer)
+        count++
+        IntervalTimer = setInterval(() => {
+          setTimer((prev) => {
+            return (prev - 1)
+          })
+        }, 1000)
       }
+    })
+    socket.on('dragon_card', (dragonCard) => {
+      setState({ dragonCard })
+    })
+    socket.on('tiger_card', (tigerCard) => {
+      setState({ tigerCard })
     })
   }, [socket])
 
-  useEffect(
-    () => {
-      if (isBetActive) {
-        setState({
-          selectedBetCoin: null,
-          previousGameStates: [],
-          currentGameStates: []
-        })
-        setTimer(10)
-      }
-    }, [isBetActive]
-  )
+  useEffect(async () => {
+    if (DTState.dragonCard && DTState.tigerCard && DTState.round.newRoundId) {
+      await stopRound({ gameId: GAMEID.DRAGON_TIGER_ID, roundId: DTState.round.newRoundId })
+      setTimeout(async () => {
+        const result = await gameResult({ userId: 1, gameId: GAMEID.DRAGON_TIGER_ID, roundId: DTState.round.newRoundId })
+        setState({ result })
+      }, 5000)
+      setTimeout(() => {
+        setState({ ...initialState, gameData: DTState.gameData, lastBet: DTState.currentGameStates })
+      }, 10 * 1000)
+    }
+  }, [DTState.dragonCard, DTState.tigerCard])
 
-  const handlePlaceBetApi = async (data) => {
-    const response = await placeBetApi(data)
-    console.log(response)
+  useEffect(() => {
+    if (timer === 0) {
+      clearInterval(IntervalTimer)
+      count = 0
+    }
+    if (timer === 1) {
+      handlePlaceBetApi()
+    }
+  }, [timer])
+
+  const fetchGameData = async () => {
+    const response = await getPreGameDataApi({ userId: 1, gameId: GAMEID.DRAGON_TIGER_ID })
+    setState({ gameData: response })
   }
 
-  const handleBet = ({ betType }) => {
+  const handlePlaceBetApi = async () => {
+    const result = chain(DTState.currentGameStates)
+      .groupBy('betId')
+      .map((group) => ({
+        betId: group[0].betId,
+        betType: group[0].betType,
+        betAmount: sumBy(group, 'betAmount')
+      }))
+      .value()
+    if (DTState.round && DTState.round.newRoundId && result.length) {
+      setTimeout(async () => {
+        await placeBetApi({
+          userId: 1,
+          gameId: GAMEID.DRAGON_TIGER_ID,
+          roundId: DTState.round.newRoundId,
+          placedBet: result
+        })
+      }, 2000)
+    }
+  }
+
+  const handleBet = ({ betId, betType }) => {
     if (!DTState.selectedBetCoin) {
       alert('Please select betting amount')
       return
     }
-    if (!isBetActive) {
+    if (!timer) {
       return
     }
     const betObject = {
-      betId: uuidv4(),
+      betId: betId,
       betType,
       betAmount: DTState.selectedBetCoin
     }
@@ -125,16 +155,20 @@ export const useDragonTigerController = () => {
     })
   }
 
+  const handleRepeat = () => {
+    if (DTState.lastBet.length) {
+      setState({ currentGameStates: DTState.lastBet, previousGameStates: [[]] })
+    }
+  }
+
   return {
     DTState,
-    isBetActive,
     timer,
     DragonTigerOperation,
-    DRAGON_TIGER_GAME_DATA,
     handleBet,
     handleSelectedBetCoin,
     handleUndo,
     handleDouble,
-    counter
+    handleRepeat
   }
 }
