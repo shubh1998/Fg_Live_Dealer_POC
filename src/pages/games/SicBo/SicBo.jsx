@@ -5,7 +5,7 @@ import { CountDownTimer } from '../../../components/CountDownTimer'
 import { Notifier } from '../../../components/Notifier'
 import { BetCoin, BettingAmountOptions, GameContainer, Item, OptionsContainer, Root, TimerDiv } from './Sicbo.Styles'
 import { useSicBoController } from './hooks/useSicBoController'
-import SicboOperations from '../../../utils/game-operations/Sicbo.JS'
+import SicboOperations from '../../../utils/game-operations/Sicbo'
 import { displaySumOfBetAmount } from '../../../utils/common-functions'
 
 export const SicBo = () => {
