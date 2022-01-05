@@ -1,10 +1,11 @@
 import { Grid } from '@mui/material'
-import { BetCoin, BettingAmountOptions, GameContainer, InfoContainer, OptionsContainer, PentagonBlock, PlacedBetCoin, Root, ZeroInfoContainer, TimerDiv } from './Roulette.styles'
+import { BetCoin, BettingAmountOptions, InfoContainer, OptionsContainer, PentagonBlock, PlacedBetCoin, ZeroInfoContainer, TimerDiv } from './Roulette.styles'
 import { useRouletteController } from './hooks/useRouletteController'
 import { CountDownTimer } from '../../../components/CountDownTimer'
 import { Notifier } from '../../../components/Notifier'
 import { displaySumOfBetAmount } from '../../../utils/common-functions'
 import { RouletteBlock } from './components/RouletteBlock'
+import { RootContainer } from '../../../components/GameContainer'
 
 export const Roulette = () => {
   const {
@@ -26,28 +27,27 @@ export const Roulette = () => {
   const array = RState.currentGameStates
 
   return (
-    <Root>
-      <GameContainer>
-        <Grid container>
-          <Grid item xs={1}>
-            <PentagonBlock
-              hover={!!RState.hoverIndexArray.includes(-1)}
-              onClick={() => handleBet({
-                betType: `${RouletteOperations.singleNumberBet}_0`
-              })}
-            >
-              <div style={{ display: 'block', transform: 'rotate(180deg)' }}>
-                <ZeroInfoContainer>0</ZeroInfoContainer>
-                {
+    <RootContainer>
+      <Grid container>
+        <Grid item xs={1}>
+          <PentagonBlock
+            hover={!!RState.hoverIndexArray.includes(-1)}
+            onClick={() => handleBet({
+              betType: `${RouletteOperations.singleNumberBet}_0`
+            })}
+          >
+            <div style={{ display: 'block', transform: 'rotate(180deg)' }}>
+              <ZeroInfoContainer>0</ZeroInfoContainer>
+              {
                   displaySumOfBetAmount({ betType: `${RouletteOperations.singleNumberBet}_0`, array }) &&
                     <PlacedBetCoin>{displaySumOfBetAmount({ betType: `${RouletteOperations.singleNumberBet}_0`, array })}</PlacedBetCoin>
                 }
-              </div>
-            </PentagonBlock>
-          </Grid>
-          <Grid item xs={10}>
-            <Grid container>
-              {
+            </div>
+          </PentagonBlock>
+        </Grid>
+        <Grid item xs={10}>
+          <Grid container>
+            {
                 ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY.map((item, index) => {
                   return (
                     <Grid item xs={1} key={item}>
@@ -96,7 +96,7 @@ export const Roulette = () => {
                   )
                 })
               }
-              {
+            {
                 ROULETTE_GAME_DATA.BLOCK_12_ROW.map(item => (
                   <Grid item xs={4} key={item.block}>
                     <InfoContainer onClick={() => handleBet({
@@ -111,7 +111,7 @@ export const Roulette = () => {
                   </Grid>
                 ))
               }
-              {
+            {
                 ROULETTE_GAME_DATA.LAST_BET_ROW.map(item => (
                   <Grid item xs={2} key={item.label} style={{ marginTop: '1px' }}>
                     <InfoContainer onClick={() => handleBet({
@@ -126,11 +126,11 @@ export const Roulette = () => {
                   </Grid>
                 ))
               }
-            </Grid>
           </Grid>
-          <Grid item xs={1}>
-            <Grid container>
-              {
+        </Grid>
+        <Grid item xs={1}>
+          <Grid container>
+            {
                 ROULETTE_GAME_DATA.SIDE_ROW_BETS.map(item => (
                   <Grid item key={item.label} xs={12} style={{ marginBottom: '5px' }}>
                     <InfoContainer
@@ -146,10 +146,9 @@ export const Roulette = () => {
                   </Grid>
                 ))
               }
-            </Grid>
           </Grid>
         </Grid>
-      </GameContainer>
+      </Grid>
       <Notifier isBetActive={isBetActive} />
       <OptionsContainer>
         <BettingAmountOptions className='casino-coin'>
@@ -179,6 +178,6 @@ export const Roulette = () => {
           </TimerDiv>
         )
       }
-    </Root>
+    </RootContainer>
   )
 }

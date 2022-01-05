@@ -1,18 +1,5 @@
 import styled from '@emotion/styled'
 
-export const Root = styled.div({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center'
-})
-
-export const GameContainer = styled.div({
-  height: 'auto',
-  width: 650,
-  margin: 50,
-  border: '4px solid black'
-})
-
 export const TimerDiv = styled.div({
   margin: '20px auto 0',
   width: 50
@@ -35,7 +22,7 @@ export const FlexContainer = styled.div({
 
 export const HalfContainer = styled.div({
   display: 'grid',
-  margin: '50px auto',
+  margin: '50px',
   border: '2px solid black'
 })
 
