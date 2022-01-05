@@ -66,6 +66,13 @@ export const useDragonTigerController = () => {
     })
   }, [socket])
 
+  useEffect(() => {
+    // Disconnect socket on unmounting component
+    return () => {
+      socket.disconnect()
+    }
+  }, [])
+
   useEffect(async () => {
     if (DTState.dragonCard && DTState.tigerCard && DTState.round.newRoundId) {
       await stopRound({ gameId: GAMEID.DRAGON_TIGER_ID, roundId: DTState.round.newRoundId })

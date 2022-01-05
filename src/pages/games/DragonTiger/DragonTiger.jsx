@@ -28,7 +28,7 @@ export const DragonTiger = () => {
   const array = DTState.currentGameStates
   const { gameData, round, dragonCard, tigerCard, result, previousGameStates, currentGameStates, selectedBetCoin, lastBet } = DTState
   return (
-    gameData.gameRules.length &&
+    gameData.gameRules.length !== 0 &&
     (
       <RootContainer>
         <Notifier isBetActive={timer} />

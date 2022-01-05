@@ -1,38 +1,27 @@
 import React from 'react'
-import { GameIcon, GameIconButton, GamesContainer, GameTitle } from './Home.styles'
+import { Link } from 'react-router-dom'
+import { GameIcon, GamesContainer, GameTitle } from './Home.styles'
 
 export const Home = () => {
   return (
     <GamesContainer>
-      <GameIconButton
-        onClick={() => {
-          window.location.href = `${window.location.origin}/dragon-tiger`
-        }}
-      >
+      <Link to='/dragon-tiger'>
         <GameIcon
           src='game-icon/dragon-tiger-logo.png'
           alt='dragon_tiger_icon'
         />
         <GameTitle>Dragon Tiger</GameTitle>
-      </GameIconButton>
+      </Link>
 
-      <GameIconButton
-        onClick={() => {
-          window.location.href = `${window.location.origin}/roulette`
-        }}
-      >
+      <Link to='/roulette'>
         <GameIcon src='game-icon/roulette-logo.png' alt='roulette_icon' />
         <GameTitle>Roulette</GameTitle>
-      </GameIconButton>
+      </Link>
 
-      <GameIconButton
-        onClick={() => {
-          window.location.href = `${window.location.origin}/sicbo`
-        }}
-      >
+      <Link to='/sicbo'>
         <GameIcon src='game-icon/sicbo-logo.png' alt='roulette_icon' />
         <GameTitle>SicBo</GameTitle>
-      </GameIconButton>
+      </Link>
     </GamesContainer>
   )
 }
