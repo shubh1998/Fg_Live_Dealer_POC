@@ -12,5 +12,6 @@ export const Notifier = ({ isBetActive }) => {
 const NotifyText = styled.strong(({ isActive }) => ({
   textAlign: 'center',
   display: 'block',
-  color: isActive ? 'green' : 'red'
+  color: isActive ? 'green' : 'red',
+  marginTop: 10
 }))

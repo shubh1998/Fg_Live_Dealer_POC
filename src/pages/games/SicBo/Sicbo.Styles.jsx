@@ -1,9 +1,5 @@
 import styled from '@emotion/styled'
 
-export const Root = styled.div({
-  textAlign: '-webkit-center'
-})
-
 export const Item = styled.div(({ height, width, margin }) => ({
   textAlign: 'center',
   border: '3px solid gray',
@@ -18,13 +14,6 @@ export const Item = styled.div(({ height, width, margin }) => ({
 
 export const InnerItem = styled.div({
   display: 'block'
-})
-
-export const GameContainer = styled.div({
-  width: 1500,
-  margin: '50px 50px 20px 50px',
-  border: '4px solid black',
-  padding: '10px'
 })
 
 export const OptionsContainer = styled.div({

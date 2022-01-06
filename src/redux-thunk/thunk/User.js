@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { loginRequest, logoutRequest, registerRequest } from '../../utils/services/user.service'
+import { loginRequest, logoutRequest, registerRequest } from '../../API/services/user.service'
 
 export const userLogin = createAsyncThunk('user/login', async (loginData, thunkApi) => {
   try {

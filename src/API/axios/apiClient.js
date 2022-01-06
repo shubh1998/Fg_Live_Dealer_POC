@@ -24,7 +24,7 @@ class ApiClient {
 
 // Create axios Instance
 const axiosInst = axios.create({
-  baseURL: 'http://localhost:8000/api/v1'
+  baseURL: 'https://demo-be-fg.herokuapp.com/api/v1'
 })
 
 // Adding axios request interceptor
@@ -37,6 +37,15 @@ axiosInst.interceptors.request.use(
     request.headers['Content-Type'] = 'application/json'
     return request
   },
+  (error) => {
+    console.log(error)
+    Promise.reject(error)
+  }
+)
+
+// Adding axios request interceptor
+axiosInst.interceptors.response.use(
+  (res) => res.data.data,
   (error) => {
     console.log(error)
     Promise.reject(error)

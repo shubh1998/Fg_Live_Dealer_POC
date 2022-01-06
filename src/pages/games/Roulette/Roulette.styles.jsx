@@ -1,18 +1,7 @@
 import styled from '@emotion/styled'
 
-export const Root = styled.div({
-  textAlign: '-webkit-center'
-})
-
-export const GameContainer = styled.div({
-  width: 1500,
-  margin: '50px 50px 20px 50px',
-  border: '4px solid black',
-  padding: '10px'
-})
-
 export const PentagonBlock = styled.div(({ hover }) => ({
-  width: '120px',
+  width: '100%',
   height: '190px',
   background: 'green',
   '-webkit-clip-path': 'polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%)',
