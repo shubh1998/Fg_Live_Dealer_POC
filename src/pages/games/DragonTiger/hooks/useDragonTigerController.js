@@ -1,9 +1,9 @@
 import { chain, cloneDeep, sumBy } from 'lodash'
-import { useContext, useEffect, useReducer, useState } from 'react'
+import { useEffect, useMemo, useReducer, useState } from 'react'
 import DragonTigerOperation from '../../../../utils/game-operations/DragonTiger'
-import { SocketContext } from '../../../../context/socket'
 import { gameResult, getPreGameDataApi, placeBetApi, stopRound } from '../../../../API/services/dragon-tiger.service'
 import { GAMEID } from '../../../../utils/game-ids'
+import { useSocketIO } from '../../../../utils/custom-hooks/useSocketIO'
 let IntervalTimer
 let count = 0
 const initialState = {
@@ -29,7 +29,7 @@ const initialState = {
 }
 
 export const useDragonTigerController = () => {
-  const socket = useContext(SocketContext)
+  const socket = useMemo(() => useSocketIO(), [])
   const [timer, setTimer] = useState(0)
   const [DTState, setState] = useReducer((state, newState) => ({
     ...state,
@@ -39,6 +39,9 @@ export const useDragonTigerController = () => {
   useEffect(() => {
     fetchGameData()
     socket.emit('join_game', GAMEID.DRAGON_TIGER_ID) // 1 game id for dragon tiger
+    return () => {
+      socket.disconnect()
+    }
   }, [])
 
   useEffect(() => {
@@ -65,13 +68,6 @@ export const useDragonTigerController = () => {
       setState({ tigerCard })
     })
   }, [socket])
-
-  useEffect(() => {
-    // Disconnect socket on unmounting component
-    return () => {
-      socket.disconnect()
-    }
-  }, [])
 
   useEffect(async () => {
     if (DTState.dragonCard && DTState.tigerCard && DTState.round.newRoundId) {
