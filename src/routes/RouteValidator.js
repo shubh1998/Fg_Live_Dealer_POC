@@ -16,7 +16,7 @@ const RouteValidator = ({ hasNavbar, component: Component, ...props }) => {
 }
 
 RouteValidator.propTypes = {
-  component: PropTypes.func.isRequired,
+  component: PropTypes.elementType.isRequired,
   hasNavbar: PropTypes.bool.isRequired,
   path: PropTypes.string.isRequired
 }
