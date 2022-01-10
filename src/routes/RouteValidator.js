@@ -1,13 +1,10 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import Cookies from 'universal-cookie'
 import { Home } from '../pages/Home/Home'
 // import NavBar from '../components/layouts/Header/NavBar'
 
 const RouteValidator = ({ hasNavbar, component: Component, ...props }) => {
-  const cookies = new Cookies()
-  const userId = cookies.get('userId')
-  if (hasNavbar && userId) {
+  if (hasNavbar) {
     return (
       <>
         <Component />

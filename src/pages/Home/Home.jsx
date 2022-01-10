@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { GameIcon, GamesContainer, GameTitle, UserInputDiv } from './Home.styles'
 import TextField from '@mui/material/TextField'
 import { Alert, AlertTitle, Button } from '@mui/material'
@@ -10,21 +10,15 @@ const cookies = new Cookies()
 export const Home = () => {
   const [userId, setUserId] = useState('')
   const [success, setSuccess] = useState(false)
-  const [userIdError, setUserIdError] = useState(false)
-  const location = useLocation()
 
   useEffect(() => {
     if (cookies.get('userId')) {
       setUserId(cookies.get('userId'))
       setSuccess(true)
     }
-    if (location.pathname !== '/') {
-      setUserIdError(true)
-    }
-  }, [location.pathname])
+  }, [])
 
   const handleUserIdChange = (value) => {
-    setUserIdError(false)
     setUserId(value)
   }
 
@@ -52,15 +46,8 @@ export const Home = () => {
             User id :{userId} Submitted — <strong>check out our games!</strong>
           </Alert>
         )}
-      {userIdError &&
-        (
-          <Alert severity='error'>
-            <AlertTitle>Error</AlertTitle>
-            User id not Submitted
-          </Alert>
-        )}
       <GamesContainer className='games-container'>
-        <Link to='/dragon-tiger'>
+        <Link to={userId ? '/dragon-tiger' : '/'}>
           <GameIcon
             src='game-icon/dragon-tiger-logo.png'
             alt='dragon_tiger_icon'
@@ -68,12 +55,12 @@ export const Home = () => {
           <GameTitle>Dragon Tiger</GameTitle>
         </Link>
 
-        <Link to='/roulette'>
+        <Link to={userId ? '/roulette' : '/'}>
           <GameIcon src='game-icon/roulette-logo.png' alt='roulette_icon' />
           <GameTitle>Roulette</GameTitle>
         </Link>
 
-        <Link to='/sicbo'>
+        <Link to={userId ? '/sicbo' : '/'}>
           <GameIcon src='game-icon/sicbo-logo.png' alt='roulette_icon' />
           <GameTitle>SicBo</GameTitle>
         </Link>
