@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 
 export const GamesContainer = styled.div({
   display: 'flex',
+  padding: '1%',
   justifyContent: 'space-between',
   maxWidth: 700
 })
@@ -25,4 +26,12 @@ export const GameIconButton = styled.button({
   padding: 0,
   display: 'grid',
   height: '185px'
+})
+
+export const UserInputDiv = styled.div({
+  padding: '1%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '25%'
 })

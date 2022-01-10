@@ -1,6 +1,7 @@
 import { chain, cloneDeep, sumBy } from 'lodash'
 import { useEffect, useMemo, useReducer, useState } from 'react'
 import { gameResult, getPreGameDataApi, placeBetApi, stopRound } from '../../../../API/services/dragon-tiger.service'
+import { useGetCookie } from '../../../../utils/custom-hooks/useGetCookie'
 import { useSocketIO } from '../../../../utils/custom-hooks/useSocketIO'
 import { GAMEID } from '../../../../utils/game-ids'
 
@@ -59,6 +60,7 @@ export const useSicBoController = () => {
   }), initialState)
 
   const socket = useMemo(() => useSocketIO(), [])
+  const userId = useMemo(() => useGetCookie(), [])
   const [timer, setTimer] = useState(0)
 
   useEffect(() => {
@@ -96,7 +98,7 @@ export const useSicBoController = () => {
     if (SBState.dices && SBState.round.newRoundId) {
       await stopRound({ gameId: GAMEID.SICBO_ID, roundId: SBState.round.newRoundId })
       setTimeout(async () => {
-        const result = await gameResult({ userId: 1, gameId: GAMEID.SICBO_ID, roundId: SBState.round.newRoundId })
+        const result = await gameResult({ userId, gameId: GAMEID.SICBO_ID, roundId: SBState.round.newRoundId })
         setState({ result })
       }, 5000)
       setTimeout(() => {
@@ -116,7 +118,7 @@ export const useSicBoController = () => {
   }, [timer])
 
   const fetchGameData = async () => {
-    const response = await getPreGameDataApi({ userId: 1, gameId: GAMEID.SICBO_ID })
+    const response = await getPreGameDataApi({ userId, gameId: GAMEID.SICBO_ID })
     setState({ gameData: response })
   }
 
@@ -131,7 +133,7 @@ export const useSicBoController = () => {
     if (SBState.round && SBState.round.newRoundId && result.length) {
       setTimeout(async () => {
         await placeBetApi({
-          userId: 1,
+          userId,
           gameId: GAMEID.SICBO_ID,
           roundId: SBState.round.newRoundId,
           placedBet: result
