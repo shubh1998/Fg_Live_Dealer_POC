@@ -2,10 +2,10 @@ import { CircularProgress, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
 
-export const CountDownTimer = ({ countDownTime = 15 }) => {
+export const CountDownTimer = ({ countDownTime = 15, totalDuration = 15 }) => {
   return (
     <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <CircularProgress variant='determinate' value={(countDownTime / 10) * -100} />
+      <CircularProgress variant='determinate' value={(countDownTime / totalDuration) * -100} />
       <Box
         sx={{
           top: 0,

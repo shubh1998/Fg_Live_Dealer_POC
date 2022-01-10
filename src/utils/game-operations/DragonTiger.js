@@ -1,18 +1,18 @@
 const DragonTigerOperation = {
   DRAGON: {
-    betId: 1,
+    betId: 'BET_ID_1',
     betType: 'DRAGON'
   },
   TIGER: {
-    betId: 2,
+    betId: 'BET_ID_2',
     betType: 'TIGER'
   },
   TIE: {
-    betId: 3,
+    betId: 'BET_ID_3',
     betType: 'TIE'
   },
   SUITED_TIE: {
-    betId: 4,
+    betId: 'BET_ID_4',
     betType: 'SUITED-TIE'
   }
 

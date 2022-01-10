@@ -13,6 +13,15 @@ const displaySumOfBetAmount = ({ betType, array }) => {
   return ''
 }
 
+const isWinningBlock = ({ betType, allWinningBets }) => allWinningBets && allWinningBets.some(winner => winner.betType === betType)
+
+const getBetPayout = ({ betType, gameRules }) => {
+  const payout = gameRules.find(item => item.bet_type === betType)?.payout
+  return `${payout}:1`
+}
+
 export {
-  displaySumOfBetAmount
+  displaySumOfBetAmount,
+  isWinningBlock,
+  getBetPayout
 }

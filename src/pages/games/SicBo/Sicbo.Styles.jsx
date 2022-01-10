@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
 
-export const Item = styled.div(({ height, width, margin }) => ({
+export const Item = styled.div(({ height, width, margin, showWin }) => ({
   textAlign: 'center',
   border: '3px solid gray',
-  backgroundColor: 'wheat',
+  backgroundColor: showWin ? 'green' : 'wheat',
   justifyContent: 'center',
   width: width || '100%',
   margin: margin || 'auto',
@@ -16,28 +16,16 @@ export const InnerItem = styled.div({
   display: 'block'
 })
 
-export const OptionsContainer = styled.div({
-  border: '1px solid black',
-  padding: '2%',
-  width: 'fit-content',
-  margin: '20px auto'
-})
-
-export const BettingAmountOptions = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  width: 400,
-  margin: 'auto'
-})
-
-export const BetCoin = styled.button(({ selectedButton }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  border: selectedButton ? '2px solid black' : 'none'
-}))
-
 export const TimerDiv = styled.div({
   margin: '20px auto 0',
   width: 50
+})
+
+export const Dice = styled.div({
+  border: '3px solid black',
+  margin: 10,
+  padding: '10px 15px',
+  borderRadius: 10,
+  color: 'white',
+  background: 'brown'
 })

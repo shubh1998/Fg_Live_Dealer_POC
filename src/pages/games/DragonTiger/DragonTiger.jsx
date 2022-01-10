@@ -121,7 +121,7 @@ export const DragonTiger = () => {
         />
         {timer > 0 && (
           <TimerDiv>
-            <CountDownTimer countDownTime={timer} />
+            <CountDownTimer countDownTime={timer} totalDuration={gameData.timer} />
           </TimerDiv>
         )}
         {

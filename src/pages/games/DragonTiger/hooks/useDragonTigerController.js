@@ -4,8 +4,11 @@ import DragonTigerOperation from '../../../../utils/game-operations/DragonTiger'
 import { gameResult, getPreGameDataApi, placeBetApi, stopRound } from '../../../../API/services/dragon-tiger.service'
 import { GAMEID } from '../../../../utils/game-ids'
 import { useSocketIO } from '../../../../utils/custom-hooks/useSocketIO'
+import { useGetCookie } from '../../../../utils/custom-hooks/useGetCookie'
+
 let IntervalTimer
 let count = 0
+
 const initialState = {
   selectedBetCoin: null,
   previousGameStates: [],
@@ -30,6 +33,7 @@ const initialState = {
 
 export const useDragonTigerController = () => {
   const socket = useMemo(() => useSocketIO(), [])
+  const userId = useMemo(() => useGetCookie(), [])
   const [timer, setTimer] = useState(0)
   const [DTState, setState] = useReducer((state, newState) => ({
     ...state,
@@ -73,7 +77,7 @@ export const useDragonTigerController = () => {
     if (DTState.dragonCard && DTState.tigerCard && DTState.round.newRoundId) {
       await stopRound({ gameId: GAMEID.DRAGON_TIGER_ID, roundId: DTState.round.newRoundId })
       setTimeout(async () => {
-        const result = await gameResult({ userId: 1, gameId: GAMEID.DRAGON_TIGER_ID, roundId: DTState.round.newRoundId })
+        const result = await gameResult({ userId, gameId: GAMEID.DRAGON_TIGER_ID, roundId: DTState.round.newRoundId })
         setState({ result })
       }, 5000)
       setTimeout(() => {
@@ -93,7 +97,7 @@ export const useDragonTigerController = () => {
   }, [timer])
 
   const fetchGameData = async () => {
-    const response = await getPreGameDataApi({ userId: 1, gameId: GAMEID.DRAGON_TIGER_ID })
+    const response = await getPreGameDataApi({ userId, gameId: GAMEID.DRAGON_TIGER_ID })
     setState({ gameData: response })
   }
 
@@ -109,7 +113,7 @@ export const useDragonTigerController = () => {
     if (DTState.round && DTState.round.newRoundId && result.length) {
       setTimeout(async () => {
         await placeBetApi({
-          userId: 1,
+          userId,
           gameId: GAMEID.DRAGON_TIGER_ID,
           roundId: DTState.round.newRoundId,
           placedBet: result

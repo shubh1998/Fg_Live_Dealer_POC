@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import React, { memo } from 'react'
 
-export const BetCoinSection = ({ casinoTokens, handleUndo, isBetActive, handleSelectedBetCoin, handleDouble, disableUndo, disableDouble, selectedBetCoin, isShowRepeat, handleRepeat }) => {
+export const BetCoinSection = memo(({ casinoTokens, handleUndo, isBetActive, handleSelectedBetCoin, handleDouble, disableUndo, disableDouble, selectedBetCoin, isShowRepeat, handleRepeat }) => {
   return (
     <OptionsContainer>
       <BettingAmountOptions className='casino-coin'>
@@ -25,7 +25,7 @@ export const BetCoinSection = ({ casinoTokens, handleUndo, isBetActive, handleSe
       </BettingAmountOptions>
     </OptionsContainer>
   )
-}
+})
 
 const BettingAmountOptions = styled.div({
   display: 'flex',
