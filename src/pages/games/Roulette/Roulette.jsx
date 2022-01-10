@@ -6,10 +6,17 @@ import { Notifier } from '../../../components/Notifier'
 import { displaySumOfBetAmount } from '../../../utils/common-functions'
 import { RouletteBlock } from './components/RouletteBlock'
 import { RootContainer } from '../../../components/GameContainer'
+import { CallBetBlock } from './components/CallBetBlock'
+
+// const ROULETTE_CALLBETS_FIRST_ROW = [16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12]
+// const ROULETTE_CALLBETS_SECOND_ROW_FIRST_COL = [24, 5, 10, 23, 8, 30]
+// const ROULETTE_CALLBETS_SECOND_ROW_SECOND_COL = [35, 3, 26, 0, 32]
+// const ROULETTE_CALLBETS_LAST_ROW = [11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15]
 
 export const Roulette = () => {
   const {
     RState,
+    setCount,
     isBetActive,
     timer,
     RouletteOperations,
@@ -22,32 +29,45 @@ export const Roulette = () => {
     formatTwoNumberBetOn,
     formatBottomBet,
     checkThreeOrFourBetPlaced,
-    handleHover
+    handleHover,
+    handleCallBet,
+    handleCallBetHover
   } = useRouletteController()
   const array = RState.currentGameStates
 
   return (
-    <RootContainer>
-      <Grid container>
-        <Grid item xs={1}>
-          <PentagonBlock
-            hover={!!RState.hoverIndexArray.includes(-1)}
-            onClick={() => handleBet({
-              betType: `${RouletteOperations.singleNumberBet}_0`
-            })}
-          >
-            <div style={{ display: 'block', transform: 'rotate(180deg)' }}>
-              <ZeroInfoContainer>0</ZeroInfoContainer>
-              {
+    <>
+      <CallBetBlock
+        callBetData={ROULETTE_GAME_DATA}
+        handleCallBet={handleCallBet}
+        count={RState.count}
+        setCount={setCount}
+        handleCallBetHover={handleCallBetHover}
+        hoverIndexCallBetArray={RState.hoverIndexCallBetArray}
+      />
+      <RootContainer>
+        <Grid container>
+          <Grid item xs={1}>
+            <PentagonBlock
+              hover={!!RState.hoverIndexArray.includes(-1)}
+              onClick={() => handleBet({
+                betType: `${RouletteOperations.singleNumberBet}_0`
+              })}
+            >
+              <div style={{ display: 'block', transform: 'rotate(180deg)' }}>
+                <ZeroInfoContainer>0</ZeroInfoContainer>
+                {
                   displaySumOfBetAmount({ betType: `${RouletteOperations.singleNumberBet}_0`, array }) &&
+                  (
                     <PlacedBetCoin>{displaySumOfBetAmount({ betType: `${RouletteOperations.singleNumberBet}_0`, array })}</PlacedBetCoin>
+                  )
                 }
-            </div>
-          </PentagonBlock>
-        </Grid>
-        <Grid item xs={10}>
-          <Grid container>
-            {
+              </div>
+            </PentagonBlock>
+          </Grid>
+          <Grid item xs={10}>
+            <Grid container>
+              {
                 ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY.map((item, index) => {
                   return (
                     <Grid item xs={1} key={item}>
@@ -59,7 +79,9 @@ export const Roulette = () => {
                         })}
                         placeBetCoin={
                           displaySumOfBetAmount({ betType: `${RouletteOperations.singleNumberBet}_${item}`, array }) &&
+                          (
                             <PlacedBetCoin>{displaySumOfBetAmount({ betType: `${RouletteOperations.singleNumberBet}_${item}`, array })}</PlacedBetCoin>
+                          )
                         }
                         leftSideHandler={() => {
                           handleBet({
@@ -96,7 +118,7 @@ export const Roulette = () => {
                   )
                 })
               }
-            {
+              {
                 ROULETTE_GAME_DATA.BLOCK_12_ROW.map(item => (
                   <Grid item xs={4} key={item.block}>
                     <InfoContainer onClick={() => handleBet({
@@ -111,7 +133,7 @@ export const Roulette = () => {
                   </Grid>
                 ))
               }
-            {
+              {
                 ROULETTE_GAME_DATA.LAST_BET_ROW.map(item => (
                   <Grid item xs={2} key={item.label} style={{ marginTop: '1px' }}>
                     <InfoContainer onClick={() => handleBet({
@@ -126,11 +148,11 @@ export const Roulette = () => {
                   </Grid>
                 ))
               }
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid item xs={1}>
-          <Grid container>
-            {
+          <Grid item xs={1}>
+            <Grid container>
+              {
                 ROULETTE_GAME_DATA.SIDE_ROW_BETS.map(item => (
                   <Grid item key={item.label} xs={12} style={{ marginBottom: '5px' }}>
                     <InfoContainer
@@ -140,44 +162,47 @@ export const Roulette = () => {
                     >{item.value}
                       {
                         displaySumOfBetAmount({ betType: `${RouletteOperations.rowViseBet}_${item.label}`, array }) &&
+                        (
                           <PlacedBetCoin>{displaySumOfBetAmount({ betType: `${RouletteOperations.rowViseBet}_${item.label}`, array })}</PlacedBetCoin>
+                        )
                       }
                     </InfoContainer>
                   </Grid>
                 ))
               }
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      <Notifier isBetActive={isBetActive} />
-      <OptionsContainer>
-        <BettingAmountOptions className='casino-coin'>
-          <button onClick={handleUndo} disabled={!isBetActive || !RState.previousGameStates.length}>
-            Undo
-          </button>
+        <Notifier isBetActive={isBetActive} />
+        <OptionsContainer>
+          <BettingAmountOptions className='casino-coin'>
+            <button onClick={handleUndo} disabled={!isBetActive || !RState.previousGameStates.length}>
+              Undo
+            </button>
 
-          {ROULETTE_GAME_DATA.casinoTokens.map((token, index) => (
-            <BetCoin
-              key={index}
-              selectedButton={RState.selectedBetCoin === token}
-              onClick={() => handleSelectedBetCoin(token)}
-              disabled={!isBetActive}
-            >
-              {token}
-            </BetCoin>
-          ))}
-          <button onClick={handleDouble} disabled={!isBetActive || !RState.currentGameStates.length}>
-            Double
-          </button>
-        </BettingAmountOptions>
-      </OptionsContainer>
-      {
-        isBetActive && (
-          <TimerDiv>
-            <CountDownTimer countDownTime={timer} />
-          </TimerDiv>
-        )
-      }
-    </RootContainer>
+            {ROULETTE_GAME_DATA.casinoTokens.map((token, index) => (
+              <BetCoin
+                key={index}
+                selectedButton={RState.selectedBetCoin === token}
+                onClick={() => handleSelectedBetCoin(token)}
+                disabled={!isBetActive}
+              >
+                {token}
+              </BetCoin>
+            ))}
+            <button onClick={handleDouble} disabled={!isBetActive || !RState.currentGameStates.length}>
+              Double
+            </button>
+          </BettingAmountOptions>
+        </OptionsContainer>
+        {
+          isBetActive && (
+            <TimerDiv>
+              <CountDownTimer countDownTime={timer} />
+            </TimerDiv>
+          )
+        }
+      </RootContainer>
+    </>
   )
 }
