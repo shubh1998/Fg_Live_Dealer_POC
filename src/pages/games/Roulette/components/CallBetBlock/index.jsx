@@ -12,12 +12,12 @@ export const CallBetBlock = ({
 }) => {
   return (
     <>
-      <CallBetCount>
-        <CustomButton variant='contained' disabled={!count} onClick={() => setCount(count - 1)}>-</CustomButton>
-        <span>{count}</span>
-        <CustomButton variant='contained' disabled={count >= 9} onClick={() => setCount(count + 1)}>+</CustomButton>
-      </CallBetCount>
       <CallbetContainer>
+        <CallBetCount>
+          <CustomButton variant='contained' disabled={!count} onClick={() => setCount(count - 1)}>-</CustomButton>
+          <span>{count}</span>
+          <CustomButton variant='contained' disabled={count >= 9} onClick={() => setCount(count + 1)}>+</CustomButton>
+        </CallBetCount>
         <CallBetsRow>
           {
             callBetData.ROULETTE_CALLBETS_FIRST_ROW.map((item) => {
