@@ -4,7 +4,6 @@ import { gameResult, getPreGameDataApi, placeBetApi, stopRound } from '../../../
 import { useGetCookie } from '../../../../utils/custom-hooks/useGetCookie'
 import { useSocketIO } from '../../../../utils/custom-hooks/useSocketIO'
 import { GAMEID } from '../../../../utils/game-ids'
-// import { v4 as uuidv4 } from 'uuid'
 import RouletteOperations, { DoubleChipsCallBets, RouletteCallBets } from '../../../../utils/game-operations/Roulette'
 
 let IntervalTimer
@@ -112,8 +111,12 @@ export const useRouletteController = () => {
       roundStatus: null,
       roundWinner: null
     },
-    rouletteBallResult: null,
-    lastBet: []
+    rouletteBallResult: {
+      roundOutcome: null
+    },
+    lastBet: [],
+    startWheel: false,
+    showResult: false
   }
 
   const socket = useMemo(() => useSocketIO(), [])
@@ -159,6 +162,7 @@ export const useRouletteController = () => {
     })
     socket.on('roulette_outcome', (rouletteBallResult) => {
       setState({ rouletteBallResult })
+      setState({ startWheel: false })
     })
   }, [socket])
 
@@ -171,7 +175,7 @@ export const useRouletteController = () => {
       }, 5000)
       setTimeout(() => {
         setState({ ...initialState, gameData: RState.gameData, lastBet: RState.currentGameStates })
-      }, 10 * 1000)
+      }, 20 * 1000)
     }
   }, [RState.rouletteBallResult])
 
@@ -182,6 +186,7 @@ export const useRouletteController = () => {
     }
     if (timer === 1) {
       handlePlaceBetApi()
+      setState({ startWheel: true })
     }
   }, [timer])
 
@@ -210,6 +215,12 @@ export const useRouletteController = () => {
     }
   }
 
+  const setShowResult = (value) => {
+    setState({
+      showResult: value
+    })
+  }
+
   const handleBet = ({ betType }) => {
     if (!RState.selectedBetCoin) {
       alert('Please select betting amount')
@@ -219,7 +230,6 @@ export const useRouletteController = () => {
       return
     }
     const betObject = {
-      // betId: uuidv4(),
       betType,
       betAmount: RState.selectedBetCoin
     }
@@ -240,7 +250,6 @@ export const useRouletteController = () => {
     if (RouletteCallBets[callBet]) {
       const newCurrentGameState = RouletteCallBets[callBet].map((item) => {
         const newValues = {
-          // betId: uuidv4(),
           betType: item,
           betAmount: DoubleChipsCallBets.includes(item) ? RState.selectedBetCoin * 2 : RState.selectedBetCoin
         }
@@ -258,7 +267,6 @@ export const useRouletteController = () => {
       for (let i = ind - RState.count; i <= ind + RState.count; i++) {
         const item = i >= 37 ? ROULETTE_GAME_DATA.ROULETTE_WHEEL_SEQUENCE[i % length] : ROULETTE_GAME_DATA.ROULETTE_WHEEL_SEQUENCE.at(i)
         singleBetUpdated.push({
-          // betId: uuidv4(),
           betType: `${RouletteOperations.singleNumberBet}_${item}`,
           betAmount: RState.selectedBetCoin
         })
@@ -400,6 +408,7 @@ export const useRouletteController = () => {
     handleHover,
     handleCallBet,
     handleCallBetHover,
-    handleRepeat
+    handleRepeat,
+    setShowResult
   }
 }

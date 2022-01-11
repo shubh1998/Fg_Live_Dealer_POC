@@ -21,9 +21,7 @@ export const CallBetsRow = styled.div({
 })
 
 export const CallbetContainer = styled.div({
-  width: '45%',
-  margin: 'auto',
-  padding: '2%'
+  padding: '5%'
 })
 
 export const CallCenterDiv = styled.div({
@@ -41,7 +39,7 @@ export const CallCenterDiv = styled.div({
 })
 
 export const CallBetCount = styled.div({
-  width: '11%',
+  width: '25%',
   display: 'flex',
   margin: '10px auto',
   justifyContent: 'space-between',

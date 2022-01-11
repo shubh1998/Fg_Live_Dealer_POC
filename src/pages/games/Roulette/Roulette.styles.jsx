@@ -78,3 +78,11 @@ export const TimerDiv = styled.div({
   margin: '20px auto 0',
   width: 50
 })
+
+export const ResultBox = styled.div({
+  width: 'fit-content',
+  padding: '1%',
+  border: '2px solid black',
+  borderRadius: '4px',
+  color: 'green'
+})
