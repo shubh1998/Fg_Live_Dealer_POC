@@ -12,7 +12,6 @@ const userSlice = createSlice({
     loggedIn: (state, action) => {},
     signUpUser: (state, action) => {},
     setIsLoggedIn: (state, action) => {
-      // console.log(action.payload)
       return {
         ...state,
         isLoggedIn: action.payload.status,

@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material'
-import { BetCoin, BettingAmountOptions, InfoContainer, OptionsContainer, PentagonBlock, PlacedBetCoin, ZeroInfoContainer, TimerDiv } from './Roulette.styles'
+import { InfoContainer, PentagonBlock, PlacedBetCoin, ZeroInfoContainer, TimerDiv } from './Roulette.styles'
 import { useRouletteController } from './hooks/useRouletteController'
 import { CountDownTimer } from '../../../components/CountDownTimer'
 import { Notifier } from '../../../components/Notifier'
@@ -7,6 +7,7 @@ import { displaySumOfBetAmount } from '../../../utils/common-functions'
 import { RouletteBlock } from './components/RouletteBlock'
 import { RootContainer } from '../../../components/GameContainer'
 import { CallBetBlock } from './components/CallBetBlock'
+import { BetCoinSection } from '../../../components/BetCoinSection'
 
 // const ROULETTE_CALLBETS_FIRST_ROW = [16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12]
 // const ROULETTE_CALLBETS_SECOND_ROW_FIRST_COL = [24, 5, 10, 23, 8, 30]
@@ -17,7 +18,6 @@ export const Roulette = () => {
   const {
     RState,
     setCount,
-    isBetActive,
     timer,
     RouletteOperations,
     hoverTypesAndStatus,
@@ -31,9 +31,11 @@ export const Roulette = () => {
     checkThreeOrFourBetPlaced,
     handleHover,
     handleCallBet,
-    handleCallBetHover
+    handleCallBetHover,
+    handleRepeat
   } = useRouletteController()
   const array = RState.currentGameStates
+  const { gameData, round, result, previousGameStates, selectedBetCoin, lastBet, rouletteBallResult } = RState
 
   return (
     <>
@@ -51,15 +53,15 @@ export const Roulette = () => {
             <PentagonBlock
               hover={!!RState.hoverIndexArray.includes(-1)}
               onClick={() => handleBet({
-                betType: `${RouletteOperations.singleNumberBet}_0`
+                betType: RouletteOperations.zeroNumber
               })}
             >
               <div style={{ display: 'block', transform: 'rotate(180deg)' }}>
                 <ZeroInfoContainer>0</ZeroInfoContainer>
                 {
-                  displaySumOfBetAmount({ betType: `${RouletteOperations.singleNumberBet}_0`, array }) &&
+                  displaySumOfBetAmount({ betType: RouletteOperations.zeroNumber, array }) &&
                   (
-                    <PlacedBetCoin>{displaySumOfBetAmount({ betType: `${RouletteOperations.singleNumberBet}_0`, array })}</PlacedBetCoin>
+                    <PlacedBetCoin>{displaySumOfBetAmount({ betType: RouletteOperations.zeroNumber, array })}</PlacedBetCoin>
                   )
                 }
               </div>
@@ -124,7 +126,7 @@ export const Roulette = () => {
                     <InfoContainer onClick={() => handleBet({
                       betType: `${RouletteOperations.twelveNumberBet}_${item.block}`
                     })}
-                    >{item.label}
+                    >{item.title}
                       {displaySumOfBetAmount({ betType: `${RouletteOperations.twelveNumberBet}_${item.block}`, array }) &&
                         <PlacedBetCoin>
                           {displaySumOfBetAmount({ betType: `${RouletteOperations.twelveNumberBet}_${item.block}`, array })}
@@ -139,7 +141,7 @@ export const Roulette = () => {
                     <InfoContainer onClick={() => handleBet({
                       betType: `${item.type}_${item.label}`
                     })}
-                    >{item.label}
+                    >{item.title}
                       {displaySumOfBetAmount({ betType: `${item.type}_${item.label}`, array }) &&
                         <PlacedBetCoin>
                           {displaySumOfBetAmount({ betType: `${item.type}_${item.label}`, array })}
@@ -173,33 +175,37 @@ export const Roulette = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Notifier isBetActive={isBetActive} />
-        <OptionsContainer>
-          <BettingAmountOptions className='casino-coin'>
-            <button onClick={handleUndo} disabled={!isBetActive || !RState.previousGameStates.length}>
-              Undo
-            </button>
-
-            {ROULETTE_GAME_DATA.casinoTokens.map((token, index) => (
-              <BetCoin
-                key={index}
-                selectedButton={RState.selectedBetCoin === token}
-                onClick={() => handleSelectedBetCoin(token)}
-                disabled={!isBetActive}
-              >
-                {token}
-              </BetCoin>
-            ))}
-            <button onClick={handleDouble} disabled={!isBetActive || !RState.currentGameStates.length}>
-              Double
-            </button>
-          </BettingAmountOptions>
-        </OptionsContainer>
+        <Notifier isBetActive={timer} />
+        <BetCoinSection
+          casinoTokens={ROULETTE_GAME_DATA.casinoTokens}
+          handleUndo={handleUndo}
+          disableUndo={!timer || !previousGameStates.length}
+          isBetActive={timer}
+          handleSelectedBetCoin={handleSelectedBetCoin}
+          handleDouble={handleDouble}
+          disableDouble={!timer || !array.length}
+          selectedBetCoin={selectedBetCoin}
+          handleRepeat={handleRepeat}
+          isShowRepeat={timer && !array.length && lastBet.length}
+        />
+        {timer > 0 && (
+          <TimerDiv>
+            <CountDownTimer countDownTime={timer} totalDuration={gameData.timer} />
+          </TimerDiv>
+        )}
         {
-          isBetActive && (
-            <TimerDiv>
-              <CountDownTimer countDownTime={timer} />
-            </TimerDiv>
+          result && round && rouletteBallResult && rouletteBallResult.roundOutcome &&
+          (
+            <div style={{ textAlign: 'center', color: 'green', margin: 5, border: '1px solid black' }}>
+              {
+                result.totalWinningAmount
+                  ? (<div>  {`Winning amount ${result.totalWinningAmount}`}  </div>)
+                  : <></>
+              }
+              <div>
+                {`Ball Roulette Outcome: ${rouletteBallResult.roundOutcome}`}
+              </div>
+            </div>
           )
         }
       </RootContainer>

@@ -1,7 +1,14 @@
-import { cloneDeep, isNumber } from 'lodash'
-import { useReducer, useState, useEffect } from 'react'
-import { v4 as uuidv4 } from 'uuid'
+import { chain, cloneDeep, isNumber, sumBy } from 'lodash'
+import { useReducer, useState, useEffect, useMemo } from 'react'
+import { gameResult, getPreGameDataApi, placeBetApi, stopRound } from '../../../../API/services/dragon-tiger.service'
+import { useGetCookie } from '../../../../utils/custom-hooks/useGetCookie'
+import { useSocketIO } from '../../../../utils/custom-hooks/useSocketIO'
+import { GAMEID } from '../../../../utils/game-ids'
+// import { v4 as uuidv4 } from 'uuid'
 import RouletteOperations, { DoubleChipsCallBets, RouletteCallBets } from '../../../../utils/game-operations/Roulette'
+
+let IntervalTimer
+let count = 0
 
 export const useRouletteController = () => {
   const hoverTypesAndStatus = {
@@ -14,56 +21,65 @@ export const useRouletteController = () => {
     RED_COLOR_BLOCK_ARRAY: [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36],
     BLOCK_12_ROW: [
       {
-        label: '1st 12',
-        block: 1
+        label: '1',
+        block: 1,
+        title: '1st 12'
       },
       {
-        label: '2nd 12',
-        block: 2
+        label: '2',
+        block: 2,
+        title: '2nd 12'
       },
       {
-        label: '3rd 12',
-        block: 3
+        label: '3',
+        block: 3,
+        title: '3rd 12'
       }],
     LAST_BET_ROW: [
       {
-        label: '1-18',
-        type: RouletteOperations.rangeBet
+        label: '1',
+        type: RouletteOperations.rangeBet,
+        title: '1 to 18'
       },
       {
         label: 'EVEN',
-        type: RouletteOperations.evenOddBet
+        type: RouletteOperations.evenOddBet,
+        title: 'Even'
       },
       {
         label: 'RED',
-        type: RouletteOperations.colorBet
+        type: RouletteOperations.colorBet,
+        title: 'Red'
       },
       {
         label: 'BLACK',
-        type: RouletteOperations.colorBet
+        type: RouletteOperations.colorBet,
+        title: 'Black'
       },
       {
         label: 'ODD',
-        type: RouletteOperations.evenOddBet
+        type: RouletteOperations.evenOddBet,
+        title: 'Odd'
       },
       {
-        label: '19-36',
-        type: RouletteOperations.rangeBet
+        label: '2',
+        type: RouletteOperations.rangeBet,
+        title: '19 to 36'
       }
     ],
     SIDE_ROW_BETS: [
       {
-        label: 'row_1',
+        label: '1',
         value: '2 To 1',
         type: RouletteOperations.rowViseBet
       },
       {
-        label: 'row_2',
+        label: '2',
         value: '2 To 1',
         type: RouletteOperations.rowViseBet
       },
       {
-        label: 'row_3',
+        label: '3',
         value: '2 To 1',
         type: RouletteOperations.rowViseBet
       }
@@ -82,16 +98,33 @@ export const useRouletteController = () => {
     currentGameStates: [],
     hoverIndexArray: [],
     hoverIndexCallBetArray: [],
-    count: 0
+    count: 0,
+    result: null,
+    gameData: {
+      gameId: null,
+      gameName: 'Roulette',
+      minimumBet: null,
+      availableCoins: [],
+      gameRules: []
+    },
+    round: {
+      newRoundId: null,
+      roundStatus: null,
+      roundWinner: null
+    },
+    rouletteBallResult: null,
+    lastBet: []
   }
+
+  const socket = useMemo(() => useSocketIO(), [])
+  const userId = useMemo(() => useGetCookie(), [])
 
   const [RState, setState] = useReducer((state, newState) => ({
     ...state,
     ...newState
   }), initialState)
 
-  const [isBetActive, setIsBetActive] = useState(true)
-  const [timer, setTimer] = useState(10)
+  const [timer, setTimer] = useState(0)
 
   const setCount = (value) => {
     setState({
@@ -100,41 +133,93 @@ export const useRouletteController = () => {
   }
 
   useEffect(() => {
-    setInterval(() => {
-      setTimer((prev) => prev - 1)
-    }, 1000)
+    fetchGameData()
+    socket.emit('join_game', GAMEID.ROULETTE_ID)
+    return () => {
+      socket.disconnect()
+    }
   }, [])
 
-  // FIXME: remove with backend socket logic
   useEffect(() => {
-    setInterval(() => {
-      setIsBetActive((prev) => !prev)
-    }, 10000)
-  }, [])
-
-  useEffect(
-    () => {
-      if (isBetActive) {
-        setState({
-          selectedBetCoin: null,
-          previousGameStates: [],
-          currentGameStates: []
-        })
-        setTimer(10)
+    socket.on('game_round_data', (res) => {
+      if (res) {
+        setState({ round: res })
       }
-    }, [isBetActive]
-  )
+    })
+    socket.on('timer', (res) => {
+      if (count === 0) {
+        setTimer(res.timer)
+        count++
+        IntervalTimer = setInterval(() => {
+          setTimer((prev) => {
+            return (prev - 1)
+          })
+        }, 1000)
+      }
+    })
+    socket.on('roulette_outcome', (rouletteBallResult) => {
+      setState({ rouletteBallResult })
+    })
+  }, [socket])
+
+  useEffect(async () => {
+    if (RState.round.newRoundId) {
+      await stopRound({ gameId: GAMEID.ROULETTE_ID, roundId: RState.round.newRoundId })
+      setTimeout(async () => {
+        const result = await gameResult({ userId, gameId: GAMEID.ROULETTE_ID, roundId: RState.round.newRoundId })
+        setState({ result })
+      }, 5000)
+      setTimeout(() => {
+        setState({ ...initialState, gameData: RState.gameData, lastBet: RState.currentGameStates })
+      }, 10 * 1000)
+    }
+  }, [RState.rouletteBallResult])
+
+  useEffect(() => {
+    if (timer === 0) {
+      clearInterval(IntervalTimer)
+      count = 0
+    }
+    if (timer === 1) {
+      handlePlaceBetApi()
+    }
+  }, [timer])
+
+  const fetchGameData = async () => {
+    const response = await getPreGameDataApi({ userId, gameId: GAMEID.ROULETTE_ID })
+    setState({ gameData: response })
+  }
+
+  const handlePlaceBetApi = async () => {
+    const result = chain(RState.currentGameStates)
+      .groupBy('betType')
+      .map((group) => ({
+        betType: group[0].betType,
+        betAmount: sumBy(group, 'betAmount')
+      }))
+      .value()
+    if (RState.round && RState.round.newRoundId && result.length) {
+      setTimeout(async () => {
+        await placeBetApi({
+          userId,
+          gameId: GAMEID.ROULETTE_ID,
+          roundId: RState.round.newRoundId,
+          placedBet: result
+        })
+      }, 2000)
+    }
+  }
 
   const handleBet = ({ betType }) => {
     if (!RState.selectedBetCoin) {
       alert('Please select betting amount')
       return
     }
-    if (!isBetActive) {
+    if (!timer) {
       return
     }
     const betObject = {
-      betId: uuidv4(),
+      // betId: uuidv4(),
       betType,
       betAmount: RState.selectedBetCoin
     }
@@ -149,13 +234,13 @@ export const useRouletteController = () => {
       alert('Please select betting amount')
       return
     }
-    if (!isBetActive) {
+    if (!timer) {
       return
     }
     if (RouletteCallBets[callBet]) {
       const newCurrentGameState = RouletteCallBets[callBet].map((item) => {
         const newValues = {
-          betId: uuidv4(),
+          // betId: uuidv4(),
           betType: item,
           betAmount: DoubleChipsCallBets.includes(item) ? RState.selectedBetCoin * 2 : RState.selectedBetCoin
         }
@@ -173,7 +258,7 @@ export const useRouletteController = () => {
       for (let i = ind - RState.count; i <= ind + RState.count; i++) {
         const item = i >= 37 ? ROULETTE_GAME_DATA.ROULETTE_WHEEL_SEQUENCE[i % length] : ROULETTE_GAME_DATA.ROULETTE_WHEEL_SEQUENCE.at(i)
         singleBetUpdated.push({
-          betId: uuidv4(),
+          // betId: uuidv4(),
           betType: `${RouletteOperations.singleNumberBet}_${item}`,
           betAmount: RState.selectedBetCoin
         })
@@ -292,10 +377,15 @@ export const useRouletteController = () => {
     setState({ hoverIndexArray: hoverIndexes })
   }
 
+  const handleRepeat = () => {
+    if (RState.lastBet.length) {
+      setState({ currentGameStates: RState.lastBet, previousGameStates: [[]] })
+    }
+  }
+
   return {
     RState,
     setCount,
-    isBetActive,
     timer,
     RouletteOperations,
     hoverTypesAndStatus,
@@ -309,6 +399,7 @@ export const useRouletteController = () => {
     checkThreeOrFourBetPlaced,
     handleHover,
     handleCallBet,
-    handleCallBetHover
+    handleCallBetHover,
+    handleRepeat
   }
 }
