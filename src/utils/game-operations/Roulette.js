@@ -1,14 +1,15 @@
 const RouletteOperations = {
-  singleNumberBet: 'bet_singleNumberBet',
-  twoNumberBet: 'bet_twoNumberBet',
-  threeNumberBet: 'bet_threeNumberBet',
-  fourNumberBet: 'bet_fourNumberBet',
-  sixNumberBet: 'bet_sixNumberBet',
-  twelveNumberBet: 'bet_twelveNumberBet',
-  rowViseBet: 'bet_rowViseBet',
-  evenOddBet: 'bet_evenOddBet',
-  rangeBet: 'bet_rangeBet',
-  colorBet: 'bet_colorBet',
+  zeroNumber: 'ROULETTE_ZERO',
+  singleNumberBet: 'ROULETTE_STRAIGHTUP',
+  twoNumberBet: 'ROULETTE_SPLIT',
+  threeNumberBet: 'ROULETTE_STREET',
+  fourNumberBet: 'ROULETTE_CORNER',
+  sixNumberBet: 'ROULETTE_DOUBLESTREET',
+  twelveNumberBet: 'ROULETTE_DOZEN',
+  rowViseBet: 'ROULETTE_COLUMN',
+  evenOddBet: 'ROULETTE',
+  colorBet: 'ROULETTE',
+  rangeBet: 'ROULETTE_HALF',
   zero: 'zero',
   tier: 'tier',
   orphelins: 'orphelins',
@@ -19,38 +20,38 @@ export default RouletteOperations
 
 export const RouletteCallBets = {
   zero: [
-    'bet_twoNumberBet_3_0',
-    'bet_twoNumberBet_15_12',
-    'bet_twoNumberBet_35_32',
-    'bet_singleNumberBet_26'
+    'ROULETTE_SPLIT_3_0',
+    'ROULETTE_SPLIT_15_12',
+    'ROULETTE_SPLIT_35_32',
+    'ROULETTE_STRAIGHTUP_26'
   ],
   tier: [
-    'bet_twoNumberBet_8_5',
-    'bet_twoNumberBet_11_10',
-    'bet_twoNumberBet_16_13',
-    'bet_twoNumberBet_24_23',
-    'bet_twoNumberBet_30_27',
-    'bet_twoNumberBet_36_33'
+    'ROULETTE_SPLIT_8_5',
+    'ROULETTE_SPLIT_11_10',
+    'ROULETTE_SPLIT_16_13',
+    'ROULETTE_SPLIT_24_23',
+    'ROULETTE_SPLIT_30_27',
+    'ROULETTE_SPLIT_36_33'
   ],
   orphelins: [
-    'bet_singleNumberBet_1',
-    'bet_twoNumberBet_9_6',
-    'bet_twoNumberBet_17_14',
-    'bet_twoNumberBet_20_17',
-    'bet_twoNumberBet_34_31'
+    'ROULETTE_STRAIGHTUP_1',
+    'ROULETTE_SPLIT_9_6',
+    'ROULETTE_SPLIT_17_14',
+    'ROULETTE_SPLIT_20_17',
+    'ROULETTE_SPLIT_34_31'
   ],
   voisins: [
-    'bet_threeNumberBet_0_3_2',
-    'bet_twoNumberBet_7_4',
-    'bet_twoNumberBet_15_12',
-    'bet_twoNumberBet_21_18',
-    'bet_twoNumberBet_22_19',
-    'bet_twoNumberBet_35_32',
-    'bet_fourNumberBet_26_29_25_28'
+    'ROULETTE_STREET_0_3_2',
+    'ROULETTE_SPLIT_7_4',
+    'ROULETTE_SPLIT_15_12',
+    'ROULETTE_SPLIT_21_18',
+    'ROULETTE_SPLIT_22_19',
+    'ROULETTE_SPLIT_35_32',
+    'ROULETTE_CORNER_26_29_25_28'
   ]
 }
 
-export const DoubleChipsCallBets = ['bet_threeNumberBet_0_3_2', 'bet_fourNumberBet_26_29_25_28']
+export const DoubleChipsCallBets = ['ROULETTE_STREET_0_3_2', 'ROULETTE_CORNER_26_29_25_28']
 
 export const TIER_VALUES = [33, 16, 24, 5, 10, 23, 8, 30, 11, 36, 13, 27]
 export const ORPHELINS_VALUES = [1, 20, 14, 31, 9, 6, 34, 17]
