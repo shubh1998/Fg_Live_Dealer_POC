@@ -49,8 +49,9 @@ const BetCoin = styled.button(({ selectedButton }) => ({
 }))
 
 const OptionsContainer = styled.div({
-  border: '1px solid black',
+  border: '3px solid black',
   padding: '2%',
+  borderRadius: '19px',
   width: 'fit-content',
   margin: '20px auto'
 })

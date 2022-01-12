@@ -27,7 +27,7 @@ const SicBo = () => {
 
   return (
     round && gameData && gameData.gameRules.length > 0 && (
-      <RootContainer>
+      <RootContainer color='#95da7e'>
         <Box>
           <Grid container spacing={1}>
             <Grid item xs={2}>
@@ -600,18 +600,18 @@ const SicBo = () => {
           </div>
         )}
         {
-        result && round &&
-        (
-          <div style={{ textAlign: 'center', color: 'green', margin: 5, border: '1px solid black' }}>
-            {
-              result.totalWinningAmount
-                ? (<div>  {`Winning amount ${result.totalWinningAmount}`}  </div>)
-                : <></>
-            }
+          result && round &&
+          (
+            <div style={{ textAlign: 'center', color: 'green', margin: 5, border: '1px solid black' }}>
+              {
+                result.totalWinningAmount
+                  ? (<div>  {`Winning amount ${result.totalWinningAmount}`}  </div>)
+                  : <></>
+              }
 
-          </div>
-        )
-      }
+            </div>
+          )
+        }
       </RootContainer>)
   )
 }
