@@ -343,13 +343,15 @@ export const useRouletteController = () => {
         }
       }
     } else {
-      value.forEach((item) => {
-        const indCallBet = ROULETTE_GAME_DATA.ROULETTE_WHEEL_SEQUENCE.indexOf(item)
-        const ind = ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY.indexOf(item)
+      if (mouseIn) {
+        value.forEach((item) => {
+          const indCallBet = ROULETTE_GAME_DATA.ROULETTE_WHEEL_SEQUENCE.indexOf(item)
+          const ind = ROULETTE_GAME_DATA.ROULETTE_NUMBER_ARRAY.indexOf(item)
 
-        hoverIndexesCallBet.push(indCallBet)
-        hoverIndexes.push(ind)
-      })
+          hoverIndexesCallBet.push(indCallBet)
+          hoverIndexes.push(ind)
+        })
+      }
     }
     setState({
       hoverIndexCallBetArray: hoverIndexesCallBet,
