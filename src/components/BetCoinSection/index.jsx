@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { keyframes } from '@mui/material'
 import React, { memo } from 'react'
 
 export const BetCoinSection = memo(({ casinoTokens, handleUndo, isBetActive, handleSelectedBetCoin, handleDouble, disableUndo, disableDouble, selectedBetCoin, isShowRepeat, handleRepeat }) => {
@@ -10,14 +11,15 @@ export const BetCoinSection = memo(({ casinoTokens, handleUndo, isBetActive, han
         </button>
 
         {casinoTokens.map((token, index) => (
-          <BetCoin
+          <BetSpinner
             key={index}
+            isBetActive={isBetActive}
             selectedButton={selectedBetCoin === token}
             onClick={() => handleSelectedBetCoin(token)}
-            disabled={!isBetActive}
           >
-            {token}
-          </BetCoin>
+            <Chip src='game-icon/chips.svg' alt='' />
+            <ChipCousin leftValueGreater={token < 100}> {token} </ChipCousin>
+          </BetSpinner>
         ))}
         <button onClick={isShowRepeat ? handleRepeat : handleDouble} disabled={isShowRepeat ? false : disableDouble}>
           {isShowRepeat ? 'Repeat' : 'Double'}
@@ -34,19 +36,36 @@ const BettingAmountOptions = styled.div({
   margin: 'auto'
 })
 
-const BetCoin = styled.button(({ selectedButton }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  border: selectedButton ? '2px solid black' : 'none',
-  fontWeight: 800,
-  cursor: 'pointer',
-  color: 'black',
-  backgroundColor: '#ebeb34',
-  width: '30px',
-  height: '30px',
-  borderRadius: '50%'
+const rotate = keyframes`
+  from {
+  transform: rotate(0deg) scale(1.3);
+}
+  to {
+  transform: rotate(360deg) scale(1.3);
+}
+  `
+const BetSpinner = styled.div(({ selectedButton, isBetActive }) => ({
+  animation: (selectedButton && isBetActive) ? `${rotate} 2s linear infinite` : 'none',
+  ':hover': {
+    animation: (isBetActive) ? `${rotate} 2s linear infinite` : 'none',
+    cursor: 'pointer'
+  }
 }))
+
+const ChipCousin = styled.div({
+  transform: 'translateY(-25px)',
+  fontSize: '9px',
+  fontWeight: 'bold',
+  color: 'white'
+})
+
+const Chip = styled.img({
+  width: '30px',
+  border: '1px solid white',
+  marginTop: 10,
+  borderRadius: '50%',
+  height: '30px'
+})
 
 const OptionsContainer = styled.div({
   border: '3px solid black',

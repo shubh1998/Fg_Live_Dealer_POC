@@ -1,4 +1,10 @@
 import styled from '@emotion/styled'
+import { keyframes } from '@mui/material'
+
+const disco = keyframes`
+  0% { background-color: green}
+  50% { background-color: yellow}
+`
 
 export const Item = styled.div(({ height, width, margin, showWin }) => ({
   textAlign: 'center',
@@ -19,12 +25,14 @@ export const Item = styled.div(({ height, width, margin, showWin }) => ({
         0px 12px 17px 2px rgb(0 0 0 / 14%),
         0px 5px 22px 4px rgb(0 0 0 / 12%)
       `,
+  ...(showWin
+    ? {
+        animation: `${disco} 1s linear 4`
+      }
+    : {}),
   '&:hover': {
-    boxShadow: `
-          0px 11px 15px -7px rgb(0 0 0 / 30%),
-          0px 24px 38px 3px rgb(0 0 0 / 24%),
-          0px 9px 46px 8px rgb(0 0 0 / 22%)
-      `
+    boxShadow: 'white 0px 0px 35px',
+    transform: 'scale(1.03)'
   }
 
 }))

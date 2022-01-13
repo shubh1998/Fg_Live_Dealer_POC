@@ -6,6 +6,7 @@ import {
   FlexContainer,
   GameIcon,
   HalfContainer,
+  TieContainer,
   TimerDiv
 } from './DragonTiger.styles'
 import { useDragonTigerController } from './hooks/useDragonTigerController'
@@ -13,6 +14,7 @@ import { displaySumOfBetAmount } from '../../../utils/common-functions'
 import { BetCoinSection } from '../../../components/BetCoinSection'
 import { ShowBetDetail } from '../../../components/ShowBetDetail'
 import { RootContainer } from '../../../components/GameContainer'
+import { Divider } from '@mui/material'
 
 export const DragonTiger = () => {
   const {
@@ -30,10 +32,11 @@ export const DragonTiger = () => {
   return (
     gameData.gameRules.length !== 0 &&
     (
-      <RootContainer>
+      <RootContainer color='black' borderColor='#9f3434'>
         <Notifier isBetActive={timer} />
         <FlexContainer className='betting-option'>
           <HalfContainer
+            isBetActive={timer}
             onClick={() =>
               handleBet({
                 betType: DragonTigerOperation.DRAGON.betType,
@@ -52,8 +55,9 @@ export const DragonTiger = () => {
             <BetSideTitle>Dragon</BetSideTitle>
           </HalfContainer>
 
-          <HalfContainer>
-            <div
+          <HalfContainer isTieBet isBetActive={timer}>
+            <TieContainer
+              isBetActive={timer}
               onClick={() =>
                 handleBet({
                   betType: DragonTigerOperation.TIE.betType,
@@ -68,8 +72,11 @@ export const DragonTiger = () => {
               />
               <p>{gameData.gameRules[2].payout}:1</p>
               <BetSideTitle>Tie</BetSideTitle>
-            </div>
-            <div
+            </TieContainer>
+            <Divider sx={{ borderColor: 'white' }} />
+            <br />
+            <TieContainer
+              isBetActive={timer}
               onClick={() =>
                 handleBet({
                   betType: DragonTigerOperation.SUITED_TIE.betType,
@@ -84,10 +91,11 @@ export const DragonTiger = () => {
               />
               <p>{gameData.gameRules[3].payout}:1</p>
               <BetSideTitle>Suited Tie</BetSideTitle>
-            </div>
+            </TieContainer>
           </HalfContainer>
 
           <HalfContainer
+            isBetActive={timer}
             onClick={() =>
               handleBet({
                 betType: DragonTigerOperation.TIGER.betType,
@@ -106,19 +114,20 @@ export const DragonTiger = () => {
             <BetSideTitle>Tiger</BetSideTitle>
           </HalfContainer>
         </FlexContainer>
-
-        <BetCoinSection
-          casinoTokens={gameData.availableCoins}
-          handleUndo={handleUndo}
-          disableUndo={!timer || !previousGameStates.length}
-          isBetActive={timer}
-          handleSelectedBetCoin={handleSelectedBetCoin}
-          handleDouble={handleDouble}
-          disableDouble={!timer || !currentGameStates.length}
-          selectedBetCoin={selectedBetCoin}
-          handleRepeat={handleRepeat}
-          isShowRepeat={timer && !currentGameStates.length && lastBet.length}
-        />
+        <div style={{ color: 'white' }}>
+          <BetCoinSection
+            casinoTokens={gameData.availableCoins}
+            handleUndo={handleUndo}
+            disableUndo={!timer || !previousGameStates.length}
+            isBetActive={timer}
+            handleSelectedBetCoin={handleSelectedBetCoin}
+            handleDouble={handleDouble}
+            disableDouble={!timer || !currentGameStates.length}
+            selectedBetCoin={selectedBetCoin}
+            handleRepeat={handleRepeat}
+            isShowRepeat={timer && !currentGameStates.length && lastBet.length}
+          />
+        </div>
         {timer > 0 && (
           <TimerDiv>
             <CountDownTimer countDownTime={timer} totalDuration={gameData.timer} />
