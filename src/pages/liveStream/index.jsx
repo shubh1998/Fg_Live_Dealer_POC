@@ -1,31 +1,35 @@
-import React, { useState } from 'react'
-import ReactPlayer from 'react-player'
+import React from 'react'
+// import ReactPlayer from 'react-player'
+import AmazonIVS from './AmazonIVS'
 
-const STREAM_URL = 'https://38656f1b3126.us-east-1.playback.live-video.net/api/video/v1/us-east-1.981682985198.channel.8QuB9cofEWXV.m3u8'
-// const SAMPLE_VIDEO = 'https://youtu.be/lkbP5OPQhdQ'
+// const STREAM_URL = 'https://38656f1b3126.us-east-1.playback.live-video.net/api/video/v1/us-east-1.981682985198.channel.8QuB9cofEWXV.m3u8'
+const STREAM_URL = 'https://fcc3ddae59ed.us-west-2.playback.live-video.net/api/video/v1/us-west-2.893648527354.channel.DmumNckWFTqz.m3u8'
 
 export const LiveStream = () => {
-  const [play, setPlay] = useState(true)
   return (
     <>
       <div style={
         {
-          minHeight: '500px',
+          minHeight: '970px',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          backgroundColor: 'black'
         }
       }
       >
         <div>
-          <h1>Live Stream</h1>
-          <ReactPlayer
-            url={STREAM_URL}
-            // url={SAMPLE_VIDEO}
-            playing={play}
-            onReady={() => setPlay(true)}
-            controls
-          />
+          <h1 style={
+            {
+              color: 'white',
+              margin: 'auto',
+              width: 'fit-content',
+              padding: '1%'
+            }
+          }
+          >Live Stream
+          </h1>
+          <AmazonIVS URL={STREAM_URL} />
         </div>
       </div>
     </>

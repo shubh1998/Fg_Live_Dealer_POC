@@ -64,6 +64,10 @@ export const Home = () => {
           <GameIcon src='game-icon/sicbo-logo.png' alt='roulette_icon' />
           <GameTitle>SicBo</GameTitle>
         </Link>
+        <Link to={userId ? '/livestream' : '/'}>
+          {/* <GameIcon src='game-icon/sicbo-logo.png' alt='roulette_icon' /> */}
+          <GameTitle>Live Stream</GameTitle>
+        </Link>
       </GamesContainer>
     </div>
   )
