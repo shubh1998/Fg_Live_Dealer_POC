@@ -2,6 +2,7 @@ import { DragonTiger } from '../pages/games/DragonTiger/DragonTiger'
 import { Roulette } from '../pages/games/Roulette/Roulette'
 import SicBo from '../pages/games/SicBo/SicBo'
 import { Home } from '../pages/Home/Home'
+import { LiveStream } from '../pages/liveStream'
 
 const routerList = [
   {
@@ -30,6 +31,13 @@ const routerList = [
     label: 'Roulette',
     path: '/roulette',
     component: Roulette,
+    hasNavbar: true
+  },
+  {
+    key: 4,
+    label: 'live-stream',
+    path: '/livestream',
+    component: LiveStream,
     hasNavbar: true
   }
 ]
