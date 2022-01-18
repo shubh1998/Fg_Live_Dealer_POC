@@ -1,5 +1,4 @@
 import React from 'react'
-// import ReactPlayer from 'react-player'
 import AmazonIVS from './AmazonIVS'
 
 // const STREAM_URL = 'https://38656f1b3126.us-east-1.playback.live-video.net/api/video/v1/us-east-1.981682985198.channel.8QuB9cofEWXV.m3u8'
@@ -13,15 +12,13 @@ export const LiveStream = () => {
           minHeight: '970px',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'black'
+          alignItems: 'center'
         }
       }
       >
         <div>
           <h1 style={
             {
-              color: 'white',
               margin: 'auto',
               width: 'fit-content',
               padding: '1%'
