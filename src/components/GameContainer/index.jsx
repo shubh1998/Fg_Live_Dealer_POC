@@ -16,7 +16,7 @@ const Root = styled.div({
 const Container = styled.div(({ color, borderColor }) => ({
   width: 'fit-content',
   margin: '50px 50px 20px 50px',
-  border: `5px solid ${borderColor || 'black'}`,
+  border: `5px solid ${borderColor}`,
   padding: '10px',
-  backgroundColor: color || 'white'
+  backgroundColor: color
 }))

@@ -96,14 +96,14 @@ export const RouletteBlock = ({
 }
 
 const CornerBorderDiv = styled.div({
-  backgroundColor: 'white',
+  // backgroundColor: 'white',
   height: '3px',
   width: '5px',
   cursor: 'pointer'
 })
 
 const TopAndBottomBorderDiv = styled.div({
-  backgroundColor: '#ffffff',
+  // backgroundColor: '#ffffff',
   height: '5px',
   width: '96%',
   position: 'relative',
@@ -111,7 +111,7 @@ const TopAndBottomBorderDiv = styled.div({
 })
 
 const SideBorderDiv = styled.div({
-  backgroundColor: '#ffffff',
+  // backgroundColor: '#ffffff',
   height: '60px',
   width: '3px',
   cursor: 'pointer'

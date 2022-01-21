@@ -24,7 +24,8 @@ export const LiveStream = () => {
               padding: '1%'
             }
           }
-          >Live Stream
+          >
+            {/* Live Stream */}
           </h1>
           <AmazonIVS URL={STREAM_URL} />
         </div>
