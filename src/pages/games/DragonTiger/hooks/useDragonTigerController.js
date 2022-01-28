@@ -123,11 +123,13 @@ export const useDragonTigerController = () => {
   }
 
   const handleBet = ({ betId, betType }) => {
-    if (!DTState.selectedBetCoin) {
-      alert('Please select betting amount')
+    if (!timer) {
+      alert('Please wait for next game start')
       return
     }
-    if (!timer) {
+
+    if (!DTState.selectedBetCoin) {
+      alert('Please select betting amount')
       return
     }
     const betObject = {

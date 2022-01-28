@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField'
 import { Alert, AlertTitle, Button } from '@mui/material'
 import Cookies from 'universal-cookie'
 
-const COOKIE_EXPIRE_MIN = 20
+// const COOKIE_EXPIRE_MIN = 20
 const cookies = new Cookies()
 export const Home = () => {
   const [userId, setUserId] = useState('')
@@ -24,7 +24,11 @@ export const Home = () => {
 
   const handleSubmitUserId = () => {
     if (userId) {
-      cookies.set('userId', userId, { path: '/', expires: new Date((Date.now() + COOKIE_EXPIRE_MIN * 60 * 1000)) })
+      cookies.set('userId', userId, {
+        path: '/'
+      // FIXME: add again the expiration time
+      // expires: new Date((Date.now() + COOKIE_EXPIRE_MIN * 60 * 1000))
+      })
       setSuccess(true)
     }
   }

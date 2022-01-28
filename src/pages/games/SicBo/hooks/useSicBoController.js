@@ -52,6 +52,11 @@ export const useSicBoController = () => {
       winningCombinations: []
     },
     dices: null
+    // dices: {
+    //   diceOne: 4,
+    //   diceTwo: 4,
+    //   diceThree: 4
+    // }
   }
 
   const [SBState, setState] = useReducer((state, newState) => ({
@@ -143,14 +148,16 @@ export const useSicBoController = () => {
   }
 
   const handleBet = ({ betType }) => {
+    if (!timer) {
+      alert('Please wait for next game start')
+      return
+    }
+
     if (!SBState.selectedBetCoin) {
       alert('Please select betting amount')
       return
     }
 
-    if (!timer) {
-      return
-    }
     const betObject = {
       betType,
       betAmount: SBState.selectedBetCoin

@@ -222,11 +222,13 @@ export const useRouletteController = () => {
   }
 
   const handleBet = ({ betType }) => {
-    if (!RState.selectedBetCoin) {
-      alert('Please select betting amount')
+    if (!timer) {
+      alert('Please wait for next game start')
       return
     }
-    if (!timer) {
+
+    if (!RState.selectedBetCoin) {
+      alert('Please select betting amount')
       return
     }
     const betObject = {
