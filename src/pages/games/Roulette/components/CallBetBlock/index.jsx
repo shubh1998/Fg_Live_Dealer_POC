@@ -14,9 +14,9 @@ export const CallBetBlock = ({
     <>
       <CallbetContainer>
         <CallBetCount>
-          <CustomButton variant='contained' disabled={!count} onClick={() => setCount(count - 1)}>-</CustomButton>
-          <span>{count}</span>
-          <CustomButton variant='contained' disabled={count >= 9} onClick={() => setCount(count + 1)}>+</CustomButton>
+          <CustomButton style={{ border: '1px solid white', color: 'white' }} variant='contained' disabled={!count} onClick={() => setCount(count - 1)}>-</CustomButton>
+          <span style={{ fontSize: 25, color: 'white', fontWeight: 'bolder' }}>{count}</span>
+          <CustomButton style={{ border: '1px solid white', color: 'white' }} variant='contained' disabled={count >= 9} onClick={() => setCount(count + 1)}>+</CustomButton>
         </CallBetCount>
         <CallBetsRow>
           {

@@ -5,7 +5,7 @@ import React from 'react'
 export const CountDownTimer = ({ countDownTime = 15, totalDuration = 15 }) => {
   return (
     <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <CircularProgress variant='determinate' value={(countDownTime / totalDuration) * -100} />
+      <CircularProgress size={100} variant='determinate' value={(countDownTime / totalDuration) * -100} />
       <Box
         sx={{
           top: 0,
@@ -18,7 +18,7 @@ export const CountDownTimer = ({ countDownTime = 15, totalDuration = 15 }) => {
           justifyContent: 'center'
         }}
       >
-        <Typography variant='caption' component='div' color='text.secondary'>
+        <Typography sx={{ color: 'white', fontWeight: 'bold', fontSize: 40 }} variant='caption' component='div'>
           {countDownTime}
         </Typography>
       </Box>

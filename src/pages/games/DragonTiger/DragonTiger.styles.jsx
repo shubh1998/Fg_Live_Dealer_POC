@@ -1,8 +1,7 @@
 import styled from '@emotion/styled'
 
 export const TimerDiv = styled.div({
-  margin: '20px auto 0',
-  width: 50
+  width: 100
 })
 
 export const GameIcon = styled.img({
@@ -51,6 +50,8 @@ export const TieContainer = styled.div(({ isBetActive }) => ({
 export const CardBox = styled.div({
   height: 70,
   width: 70,
-  border: '1px solid black',
-  margin: 'auto'
+  border: '2px solid red',
+  margin: 'auto',
+  color: 'black',
+  background: 'white'
 })

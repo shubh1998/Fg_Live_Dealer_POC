@@ -42,8 +42,7 @@ export const InnerItem = styled.div({
 })
 
 export const TimerDiv = styled.div({
-  margin: '20px auto 0',
-  width: 50
+  width: 100
 })
 
 export const Dice = styled.div({

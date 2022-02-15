@@ -15,10 +15,10 @@ export const RouletteWheel = ({ startWheel, index, data, onStopSpinning }) => {
             innerRadius={60}
             textDistance={90}
             perpendicularText
-            outerBorderColor='white'
+            // outerBorderColor='white'
             outerBorderWidth={10}
             radiusLineWidth={1}
-            radiusLineColor='white'
+          // radiusLineColor='white'
           />
         )
       }
@@ -32,7 +32,7 @@ export const RouletteWheel = ({ startWheel, index, data, onStopSpinning }) => {
             innerRadius={60}
             textDistance={90}
             perpendicularText
-            outerBorderColor='white'
+            // outerBorderColor='white'
             outerBorderWidth={10}
             radiusLineWidth={1}
             radiusLineColor='white'
