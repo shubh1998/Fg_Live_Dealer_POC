@@ -1,0 +1,1780 @@
+{
+	"info": {
+		"_postman_id": "fdb134c0-165c-44b3-8f4c-28a2635d05fd",
+		"name": "Fantastic Game API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SicBo",
+			"item": [
+				{
+					"name": "API 1 || Game rules",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\":\"2\", \"gameId\": 2}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/game-data",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"game-data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 2 || Start round",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const body = pm.response.json()",
+									"const round_id = body.data.roundId",
+									"pm.environment.set(\"sicbo_round_id\", round_id);",
+									"setTimeout(() => postman.setNextRequest(\"API 3 || Place bet\"), 21000)"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 2}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/start-round",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"start-round"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 3 || Place bet",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 2,\n    \"gameId\": 2,\n    \"roundId\": {{sicbo_round_id}},\n    \"placedBet\": [\n        {\n            \"betType\": \"BET_SMALL\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"BET_BIG\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"BET_EVEN\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"BET_ODD\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"BET_TRIPLE\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"BET_SUM_4\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"BET_SUM_5\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"BET_SUM_9\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"BET_SUM_17\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"BET_SINGLE-DICE_1\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"BET_DOUBLE_1_1\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"BET_DICE-COMBO_1_2\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"BET_SPECIFIC-TRIPLE_1_1_1\",\n            \"betAmount\": 1\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/place-bet",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"place-bet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 4 || Stop bet placing",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 2, \"roundId\": {{sicbo_round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/stop-bet-placing",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"stop-bet-placing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 5 || Roll Dices",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 2, \"roundId\": {{sicbo_round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/roll-dice",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"roll-dice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 6 || Stop Round - Calculate result",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 2, \"roundId\": {{sicbo_round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/stop-round",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"stop-round"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API  7 || Game result",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\":2, \"gameId\": 2, \"roundId\": {{sicbo_round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/game-result",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"game-result"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roulette",
+			"item": [
+				{
+					"name": "API 1 || Game rules",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\":\"2\", \"gameId\": 3}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/game-data",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"game-data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 2 || Start round",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const body = pm.response.json()",
+									"const round_id = body.data.roundId",
+									"pm.environment.set(\"roulette_round_id\", round_id);",
+									"setTimeout(() => postman.setNextRequest(\"API 3 || Place bet\"), 21000)"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 3}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/start-round",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"start-round"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 3 || Place bet",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 2,\n    \"gameId\": 3,\n    \"roundId\": {{roulette_round_id}},\n    \"placedBet\": [\n        {\n            \"betType\": \"ROULETTE_ZERO\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_STRAIGHTUP_2\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_STRAIGHTUP_25\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_SPLIT_2_5\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_SPLIT_2_1\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_STREET_1_2_3\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_STREET_25_26_27\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_CORNER_1_2_5_4\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_CORNER_0_1_2_3\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_DOUBLESTREET_1_2_3_6_5_4\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_DOUBLESTREET_13_14_15_16_17_18\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_COLUMN_1\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_COLUMN_2\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_COLUMN_3\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_DOZEN_1\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_DOZEN_2\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_ODD\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_EVEN\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_RED\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_BLACK\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_HALF_1\",\n            \"betAmount\": 1\n        },\n        {\n            \"betType\": \"ROULETTE_HALF_2\",\n            \"betAmount\": 1\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/place-bet",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"place-bet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 4 || Stop bet placing",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 3, \"roundId\": {{roulette_round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/stop-bet-placing",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"stop-bet-placing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 5 || Roll Ball",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 3, \"roundId\": {{roulette_round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/roll-ball",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"roll-ball"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 6 || Stop Round - Calculate result",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 3, \"roundId\": {{roulette_round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/stop-round",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"stop-round"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API  7 || Game result",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\":2, \"gameId\": 3, \"roundId\": {{roulette_round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/game-result",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"game-result"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roulette FE",
+			"item": [
+				{
+					"name": "API 1 || Game rules",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\":\"2\", \"gameId\": 3}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/game-data",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"game-data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 2 || Start round",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const body = pm.response.json()",
+									"const round_id = body.data.roundId",
+									"pm.environment.set(\"roulette_round_id\", round_id);",
+									"setTimeout(() => postman.setNextRequest(\"API 3 || Stop bet placing\"), 21000)"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 3}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/start-round",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"start-round"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 3 || Stop bet placing",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 3, \"roundId\": {{roulette_round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/stop-bet-placing",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"stop-bet-placing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 4 || Roll Ball",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"gameId\": 3,\n    \"roundId\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/roll-ball",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"roll-ball"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 5 || Stop Round - Calculate result",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 3, \"roundId\": {{roulette_round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/stop-round",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"stop-round"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SicBo FE",
+			"item": [
+				{
+					"name": "API 1 || Game rules",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\":\"2\", \"gameId\": 2}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/game-data",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"game-data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 2 || Start round",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const body = pm.response.json()",
+									"const round_id = body.data.roundId",
+									"pm.environment.set(\"sicbo_round_id\", round_id);",
+									"setTimeout(() => postman.setNextRequest(\"API 4 || Stop bet placing\"), 21000)"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 2}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/start-round",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"start-round"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 4 || Stop bet placing",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 2, \"roundId\": {{sicbo_round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/stop-bet-placing",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"stop-bet-placing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 5 || Roll Dices",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 2, \"roundId\": {{sicbo_round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/roll-dice",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"roll-dice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 6 || Stop Round - Calculate result",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 2, \"roundId\": {{sicbo_round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/stop-round",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"stop-round"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DragonTiger",
+			"item": [
+				{
+					"name": "API 1 || Game rules",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\":\"2\", \"gameId\": 1}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/game-data",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"game-data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 2 || Start round",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const body = pm.response.json()",
+									"const round_id = body.data.roundId",
+									"pm.environment.set(\"round_id\", round_id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 1}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/start-round",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"start-round"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 3 || Place bet",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"gameId\": 1,\n    \"roundId\": {{round_id}},\n    \"placedBet\": [\n        {\n            \"betId\": 1,\n            \"betType\": \"DRAGON\",\n            \"betAmount\": 1\n        },\n        {\n            \"betId\": 2,\n            \"betType\": \"TIGER\",\n            \"betAmount\": 1\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/place-bet",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"place-bet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 4 || Stop bet placing",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 1, \"roundId\": {{round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/stop-bet-placing",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"stop-bet-placing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 5 || Open Dragon Card",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 1, \"roundId\": {{round_id}}, \"cardType\": \"DRAGON\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/open-dragon",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"open-dragon"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API 6 || Open Tiger Card",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 1, \"roundId\": {{round_id}}, \"cardType\": \"TIGER\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/open-tiger",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"open-tiger"
+							]
+						},
+						"description": "tiger"
+					},
+					"response": []
+				},
+				{
+					"name": "API 7 || Stop Round - Calculate result",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"gameId\": 1, \"roundId\": {{round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/stop-round",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"stop-round"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API  8 || Game result",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "user@123",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\":1, \"gameId\": 1, \"roundId\": {{round_id}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/demo/game-result",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"demo",
+								"game-result"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "websocket",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "join_game\ngame_round_data\ntimer\ndragon_card\ntiger_card\nsic_bo_dices"
+				},
+				"url": {
+					"raw": "https://demo-be-fg.herokuapp.com",
+					"protocol": "https",
+					"host": [
+						"demo-be-fg",
+						"herokuapp",
+						"com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "syncDB",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "1",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "user@123",
+							"type": "string"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"syncDB\": \"ALL\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/demo/sync-db",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"demo",
+						"sync-db"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "resetGames",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"gameId\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/demo/reset-game-rounds",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"demo",
+						"reset-game-rounds"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
